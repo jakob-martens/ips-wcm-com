@@ -1,6 +1,6 @@
 {
     "id": "{F0DB30BA-6398-0504-680F-331488BC3FBA}",
-    "name": "WCMClient",
+    "name": "WCMConnector",
     "type": 3,
     "vendor": "",
     "aliases":
@@ -12,5 +12,5 @@
     "parentRequirements": [],
     "childRequirements": [],
     "implemented": [],
-    "prefix": "wcm"
+    "prefix": "WCM"
 }
