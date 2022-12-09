@@ -1,5 +1,5 @@
 <?
-//require __DIR__ . '/../libs/';
+require __DIR__ . '/../libs/wcm-client/wcm.php';
 
 class WCMConnector extends IPSModule {
 
