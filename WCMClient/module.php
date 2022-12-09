@@ -14,7 +14,7 @@ class WCMClient extends IPSModule {
     }
     
     public function MeineErsteEigeneFunktion() {
-        // Selbsterstellter Code
+        echo $this->RegisterPropertyString("URL");
     }
 }
 ?>
