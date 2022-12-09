@@ -1,0 +1,16 @@
+{
+    "id": "{F0DB30BA-6398-0504-680F-331488BC3FBA}",
+    "name": "WCMClient",
+    "type": 3,
+    "vendor": "",
+    "aliases":
+    [
+        "Weishaupt",
+        "WCM-COM"
+    ],
+    "url": "",
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "wcm"
+}
