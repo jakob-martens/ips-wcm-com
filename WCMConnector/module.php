@@ -16,7 +16,7 @@ class WCMConnector extends IPSModule {
     }
     
     public function MeineErsteEigeneFunktion() {
-        echo $this->RegisterPropertyString("URL");
+        echo $this->ReadPropertyString("URL");
     }
 }
 ?>
