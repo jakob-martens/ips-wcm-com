@@ -1,5 +1,5 @@
 <?php
-include __DIR__ . 'constants.php';
+include __DIR__ . '/constants.php';
 
 class WeishauptOptions {
     public string $url;
@@ -27,13 +27,13 @@ class TelegramObject {
 class FinalTelegramObject {
     public int $MODULTYP;
     public int $BUSKENNUNG;
-    public Command $COMMAND;
-    public Protocol $PROT;
-    public Info $INFONR;
+    public int $COMMAND;
+    public int $PROT;
+    public int $INFONR;
     public int $INDEX;
     public int $DATA;
     public int $HIGH_BYTE;
-    public Unit $UNIT;
+    public string $UNIT;
 }
 
 class TelegramObjectCollection implements IteratorAggregate {
@@ -77,7 +77,7 @@ class Weishaupt {
         $body = [
             "prot" => "coco",
             "telegramm" => [
-                [6, ($heizkreis - 1), Operation::Lesen->value, Info::BetriebsartHK->value, 0, 0, 0, 0]
+                [6, ($heizkreis - 1), Operation["Lesen"], Info["BetriebsartHK"], 0, 0, 0, 0]
             ]
         ];
 
@@ -94,7 +94,7 @@ class Weishaupt {
         $body = [
             "prot" => "coco",
             "telegramm" => [
-                [6, ($heizkreis - 1), Operation::Schreiben->value, Info::BetriebsartHK->value, 0, 0, $betriebsart->value, 0]
+                [6, ($heizkreis - 1), Operation["Schreiben"], Info["BetriebsartHK"], 0, 0, $betriebsart->value, 0]
             ]
         ];
 
@@ -114,10 +114,10 @@ class Weishaupt {
         $body = [
             "prot" => "coco",
             "telegramm" => [
-                [0, 0, Operation::Lesen->value, Info::Fehlercode->value, 0, 0, 0, 0],
-                [10, 0, Operation::Lesen->value, Info::Waermeanforderung->value, 0, 0, 0, 0],
-                [10, 0, Operation::Lesen->value, Info::Aussentemperatur->value, 0, 0, 0, 0],
-                [10, 0, Operation::Lesen->value, Info::Vorlauftemperatur->value, 0, 0, 0, 0]
+                [0, 0, Operation["Lesen"], Info["Fehlercode"], 0, 0, 0, 0],
+                [10, 0, Operation["Lesen"], Info["Waermeanforderung"], 0, 0, 0, 0],
+                [10, 0, Operation["Lesen"], Info["Aussentemperatur"], 0, 0, 0, 0],
+                [10, 0, Operation["Lesen"], Info["Vorlauftemperatur"], 0, 0, 0, 0]
             ]
         ];
 
@@ -137,14 +137,14 @@ class Weishaupt {
         $body = [
             "prot" => "coco",
             "telegramm" => [
-                [10, 0, Operation::Lesen->value, Info::Laststellung->value, 0, 0, 0, 0],
-                [10, 0, Operation::Lesen->value, Info::GedaempfteAussentemperatur->value, 0, 0, 0, 0],
-                [10, 0, Operation::Lesen->value, Info::Waermeanforderung->value, 0, 0, 0, 0],
-                [10, 0, Operation::Lesen->value, Info::VorlauftemperaturEstb->value, 0, 0, 0, 0],
-                [10, 0, Operation::Lesen->value, Info::Abgastemperatur->value, 0, 0, 0, 0],
-                [10, 0, Operation::Lesen->value, Info::Aussentemperatur->value, 0, 0, 0, 0],
-                [10, 0, Operation::Lesen->value, Info::Warmwassertemperatur->value, 0, 0, 0, 0],
-                [10, 0, Operation::Lesen->value, Info::Betriebsphase->value, 0, 0, 0, 0]
+                [10, 0, Operation["Lesen"], Info["Laststellung"], 0, 0, 0, 0],
+                [10, 0, Operation["Lesen"], Info["GedaempfteAussentemperatur"], 0, 0, 0, 0],
+                [10, 0, Operation["Lesen"], Info["Waermeanforderung"], 0, 0, 0, 0],
+                [10, 0, Operation["Lesen"], Info["VorlauftemperaturEstb"], 0, 0, 0, 0],
+                [10, 0, Operation["Lesen"], Info["Abgastemperatur"], 0, 0, 0, 0],
+                [10, 0, Operation["Lesen"], Info["Aussentemperatur"], 0, 0, 0, 0],
+                [10, 0, Operation["Lesen"], Info["Warmwassertemperatur"], 0, 0, 0, 0],
+                [10, 0, Operation["Lesen"], Info["Betriebsphase"], 0, 0, 0, 0]
             ]
         ];
 
@@ -164,12 +164,12 @@ class Weishaupt {
         $body = [
             "prot" => "coco",
             "telegramm" => [
-                [3, 0, Operation::Lesen->value, Info::T1Kollektor->value, 0, 0, 0],
-                [3, 0, Operation::Lesen->value, Info::Durchfluss->value, 0, 0, 0],
-                [3, 0, Operation::Lesen->value, Info::LeistungSolar->value, 0, 0, 0],
-                [3, 0, Operation::Lesen->value, Info::T2SolarUnten->value, 0, 0, 0],
-                [3, 0, Operation::Lesen->value, Info::B10PufferOben->value, 0, 0, 0],
-                [3, 0, Operation::Lesen->value, Info::B11PufferUnten->value, 0, 0, 0]
+                [3, 0, Operation["Lesen"], Info["T1Kollektor"], 0, 0, 0],
+                [3, 0, Operation["Lesen"], Info["Durchfluss"], 0, 0, 0],
+                [3, 0, Operation["Lesen"], Info["LeistungSolar"], 0, 0, 0],
+                [3, 0, Operation["Lesen"], Info["T2SolarUnten"], 0, 0, 0],
+                [3, 0, Operation["Lesen"], Info["B10PufferOben"], 0, 0, 0],
+                [3, 0, Operation["Lesen"], Info["B11PufferUnten"], 0, 0, 0]
             ]
         ];
 
@@ -196,8 +196,8 @@ class Weishaupt {
         foreach($telegramArray as $telegramEntry) {
             $respObj = new TelegramObject();
             foreach($telegramEntry as $i => $value) {
-                $attributeName = Type::from($i);
-                $respObj->{$attributeName->name} = $value;
+                $attributeName = array_search($i, Type);
+                $respObj->{$attributeName} = $value;
             }
             $response->add($respObj);
         }
@@ -214,21 +214,20 @@ class Weishaupt {
         $finalTelegramObjects = new FinalTelegramObjectCollection();
         foreach ($telegramObjects as $telegramObject) {
             $finalTelegramObj = new FinalTelegramObject();
-            $finalTelegramObj->COMMAND = Command::from($telegramObject->COMMAND);
+            $finalTelegramObj->COMMAND = $telegramObject->COMMAND;
             $finalTelegramObj->MODULTYP = $telegramObject->COMMAND;
             $finalTelegramObj->DATA = $this->_convertData($telegramObject);
             $finalTelegramObj->BUSKENNUNG = $telegramObject->BUSKENNUNG;
-            $finalTelegramObj->PROT = Protocol::from($telegramObject->PROT);
+            $finalTelegramObj->PROT = $telegramObject->PROT;
             $finalTelegramObj->INDEX = $telegramObject->INDEX;
-            $finalTelegramObj->INFONR = Info::tryFrom($telegramObject->INFONR) ?? $telegramObject->INFONR;
+            $finalTelegramObj->INFONR = $telegramObject->INFONR;
             $finalTelegramObj->HIGH_BYTE = $telegramObject->HIGH_BYTE;
             
-            $enumName = $finalTelegramObj->INFONR->name;
-            $cases = Unit::cases();
-            $matchingIndex = array_search($enumName, array_column($cases, "name"));
+            $enumName = array_search($finalTelegramObj->INFONR, Info);
+            $match = array_key_exists($enumName, Unit);
 
-            if($matchingIndex !== false) {
-                $finalTelegramObj->UNIT = $cases[$matchingIndex];
+            if($match !== false) {
+                $finalTelegramObj->UNIT = Unit[$enumName];
             }
             
             $finalTelegramObjects->add($finalTelegramObj);
@@ -244,29 +243,29 @@ class Weishaupt {
      */
     private function _convertData(TelegramObject $telegramObject): int {
         switch ($telegramObject->INFONR) {
-            case Info::VorlauftemperaturEstb->value:
-            case Info::GedaempfteAussentemperatur->value:
-            case Info::Waermeanforderung->value:
-            case Info::Aussentemperatur->value:
-            case Info::Warmwassertemperatur->value:
-            case Info::Abgastemperatur->value:
-            case Info::Vorlauftemperatur->value:
-            case Info::T2SolarUnten->value:
-            case Info::B11PufferUnten->value:
-            case Info::B10PufferOben->value:
-            case Info::T1Kollektor->value:
+            case Info["VorlauftemperaturEstb"]:
+            case Info["GedaempfteAussentemperatur"]:
+            case Info["Waermeanforderung"]:
+            case Info["Aussentemperatur"]:
+            case Info["Warmwassertemperatur"]:
+            case Info["Abgastemperatur"]:
+            case Info["Vorlauftemperatur"]:
+            case Info["T2SolarUnten"]:
+            case Info["B11PufferUnten"]:
+            case Info["B10PufferOben"]:
+            case Info["T1Kollektor"]:
                 $val = $this->_extractValue($telegramObject->DATA, $telegramObject->HIGH_BYTE);
                 return (int) ($val / 10);
-            case Info::LeistungSolar->value:
-            case Info::Durchfluss->value:
+            case Info["LeistungSolar"]:
+            case Info["Durchfluss"]:
                 $val = $this->_extractValue($telegramObject->DATA, $telegramObject->HIGH_BYTE);
                 return (int) ($val / 100);
-            case Info::Fehlercode->value:
-            case Info::Password->value:
-            case Info::StartsiteFooter->value:
-            case Info::Laststellung->value:
-            case Info::Betriebsphase->value:
-            case Info::BetriebsartHK->value:
+            case Info["Fehlercode"]:
+            case Info["Password"]:
+            case Info["StartsiteFooter"]:
+            case Info["Laststellung"]:
+            case Info["Betriebsphase"]:
+            case Info["BetriebsartHK"]:
                 return $telegramObject->DATA;
             default:
                 throw new Exception("Unknown Info: {$telegramObject->INFONR}");
