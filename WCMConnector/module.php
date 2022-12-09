@@ -6,9 +6,9 @@ class WCMConnector extends IPSModule {
     public function Create() {
         parent::Create();
         
-        $this->RegisterPropertyString("URL", "[]");
-        $this->RegisterPropertyString("Username", "[]");
-        $this->RegisterPropertyString("Password", "[]");
+        $this->RegisterPropertyString("URL", "");
+        $this->RegisterPropertyString("Username", "");
+        $this->RegisterPropertyString("Password", "");
     }
     
     public function ApplyChanges() {
