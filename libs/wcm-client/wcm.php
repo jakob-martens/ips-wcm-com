@@ -1,5 +1,5 @@
 <?php
-include 'constants.php';
+include __DIR__ . 'constants.php';
 
 class WeishauptOptions {
     public string $url;
