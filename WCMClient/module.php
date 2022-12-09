@@ -1,4 +1,6 @@
 <?
+//require __DIR__ . '/../libs/';
+
 class WCMClient extends IPSModule {
 
     public function Create() {
