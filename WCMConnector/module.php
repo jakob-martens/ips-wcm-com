@@ -31,7 +31,7 @@ class WCMConnector extends IPSModule {
         }
         
         $this->UpdateWCMStatus();
-        $this->RequestAction("ParameterUpdate", $this->GetValue("ParameterUpdate"))
+        $this->RequestAction("ParameterUpdate", $this->GetValue("ParameterUpdate"));
     }
     
     public function RequestAction($Ident, $Value) {
