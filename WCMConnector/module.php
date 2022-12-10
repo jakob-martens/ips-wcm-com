@@ -23,7 +23,7 @@ class WCMConnector extends IPSModule {
         parent::ApplyChanges();
         
         for($i = $this->ReadPropertyInteger("FirstHK"); $i <= $this->ReadPropertyInteger("LastHK"); $i++) {
-            $this->RegisterVariableInteger("Heizkreis".$i, "Heizkreis ".$i, "WCM.BetriebsartHK");
+            $this->RegisterVariableInteger("BetriebsartHeizkreis".$i, "Betriebsart Heizkreis ".$i, "WCM.BetriebsartHK");
         }
         
         $this->UpdateWCMStatus();
@@ -36,7 +36,7 @@ class WCMConnector extends IPSModule {
         
         for($i = $this->ReadPropertyInteger("FirstHK"); $i <= $this->ReadPropertyInteger("LastHK"); $i++) {
             $params = $api->getHKParameters($i);
-            $this->SetValue("Heizkreis".$i, $params->getIterator()[0]->DATA);
+            $this->SetValue("BetriebsartHeizkreis".$i, $params->getIterator()[0]->DATA);
         }
     }
     
