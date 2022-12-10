@@ -39,7 +39,7 @@ class WCMConnector extends IPSModule {
 
         switch($Ident) {
             case "ParameterUpdate":
-                //SetValue($this->GetIDForIdent($Ident), $Value);
+                SetValue($this->GetIDForIdent($Ident), $Value);
                 break;
             default:
                 throw new Exception("Invalid Ident");
