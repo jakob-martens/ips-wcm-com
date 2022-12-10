@@ -145,7 +145,7 @@ class Weishaupt {
      * Adds a new telegram to the buffer and returns the buffer position
      */
    public function bufferedUpdateBetriebsartHK(int $heizkreis, BetriebsartHK $betriebsart): int {
-        $telegram = [6, ($heizkreis - 1), Operation["Schreiben"], Info["BetriebsartHK"], 0, 0, $betriebsart->value, 0]
+        $telegram = [6, ($heizkreis - 1), Operation["Schreiben"], Info["BetriebsartHK"], 0, 0, $betriebsart->value, 0];
         $len = array_push($this->telegramRequestBuffer, $telegram);
         
         return $len - 1;
