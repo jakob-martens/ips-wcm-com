@@ -14,6 +14,9 @@ class WCMConnector extends IPSModule {
         $this->RegisterPropertyInteger("FirstHK", 2);
         $this->RegisterPropertyInteger("LastHK", 5);
         
+        $this->RegisterVariableBoolean("ParameterUpdate", "Parameter Update", "~Switch");
+
+        
         $this->RegisterTimer("Update", 0, "WCM_UpdateWCMStatus(".$this->InstanceID.");");
         
         $this->CreateVarProfileWCMBetriebsartHK();
@@ -29,6 +32,19 @@ class WCMConnector extends IPSModule {
         $this->UpdateWCMStatus();
         
         $this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval") * 1000);
+    }
+    
+    public function RequestAction($Ident, $Value) {
+
+        switch($Ident) {
+            case "ParameterUpdate":
+                echo "test";
+                //SetValue($this->GetIDForIdent($Ident), $Value);
+                break;
+            default:
+                throw new Exception("Invalid Ident");
+        }
+        
     }
     
     public function UpdateWCMStatus() {
