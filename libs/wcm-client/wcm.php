@@ -109,9 +109,8 @@ class Weishaupt {
      */
     public function bufferedRequestLaststellung(): int {
         $telegram = [10, 0, Operation["Lesen"], Info["Laststellung"], 0, 0, 0, 0];
-        $len = array_push($this->telegramRequestBuffer, $telegram);
-        
-        return $len - 1;
+
+        return $this->addBuffer($telegram);
     }
     
     /**
@@ -119,9 +118,8 @@ class Weishaupt {
      */
     public function bufferedRequestFehlercode(): int {
         $telegram = [0, 0, Operation["Lesen"], Info["Fehlercode"], 0, 0, 0, 0];
-        $len = array_push($this->telegramRequestBuffer, $telegram);
-        
-        return $len - 1;
+
+        return $this->addBuffer($telegram);
     }
     
     /**
@@ -129,9 +127,8 @@ class Weishaupt {
      */
     public function bufferedRequestWaermeanforderung(): int {
         $telegram = [10, 0, Operation["Lesen"], Info["Waermeanforderung"], 0, 0, 0, 0];
-        $len = array_push($this->telegramRequestBuffer, $telegram);
-        
-        return $len - 1;
+
+        return $this->addBuffer($telegram);
     }
     
     /**
@@ -139,9 +136,8 @@ class Weishaupt {
      */
     public function bufferedRequestAussentemperatur(): int {
         $telegram = [10, 0, Operation["Lesen"], Info["Aussentemperatur"], 0, 0, 0, 0];
-        $len = array_push($this->telegramRequestBuffer, $telegram);
-        
-        return $len - 1;
+
+        return $this->addBuffer($telegram);
     }
     
     /**
@@ -149,9 +145,8 @@ class Weishaupt {
      */
     public function bufferedRequestVorlauftemperatur(): int {
         $telegram = [10, 0, Operation["Lesen"], Info["Vorlauftemperatur"], 0, 0, 0, 0];
-        $len = array_push($this->telegramRequestBuffer, $telegram);
-        
-        return $len - 1;
+
+        return $this->addBuffer($telegram);
     }
     
     /**
@@ -159,9 +154,8 @@ class Weishaupt {
      */
     public function bufferedRequestBetriebsartHK(int $heizkreis): int {
         $telegram = [6, ($heizkreis - 1), Operation["Lesen"], Info["BetriebsartHK"], 0, 0, 0, 0];
-        $len = array_push($this->telegramRequestBuffer, $telegram);
-        
-        return $len - 1;
+
+        return $this->addBuffer($telegram);
     }
     
      /**
@@ -169,6 +163,15 @@ class Weishaupt {
      */
    public function bufferedUpdateBetriebsartHK(int $heizkreis, int $betriebsart): int {
         $telegram = [6, ($heizkreis - 1), Operation["Schreiben"], Info["BetriebsartHK"], 0, 0, $betriebsart, 0];
+
+        return $this->addBuffer($telegram);
+    }
+    
+    private function addBuffer(array $telegram): int {
+        if(len($this->telegramRequestBuffer) >= 8) {
+            throw new Exception("Buffer cannot contain more than 8 telegrams.");
+        }
+        
         $len = array_push($this->telegramRequestBuffer, $telegram);
         
         return $len - 1;
