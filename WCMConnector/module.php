@@ -31,8 +31,7 @@ class WCMConnector extends IPSModule {
         }
         
         $this->UpdateWCMStatus();
-        
-        $this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval") * 1000);
+        $this->RequestAction("ParameterUpdate", $this->ReadVariableBoolean("ParameterUpdate"))
     }
     
     public function RequestAction($Ident, $Value) {
@@ -40,6 +39,11 @@ class WCMConnector extends IPSModule {
         switch($Ident) {
             case "ParameterUpdate":
                 SetValue($this->GetIDForIdent($Ident), $Value);
+                
+                if($Value === True)
+                    $this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval") * 1000);
+                else
+                    $this->SetTimerInterval("Update", 0);
                 break;
             default:
                 throw new Exception("Invalid Ident");
