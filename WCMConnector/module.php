@@ -29,6 +29,12 @@ class WCMConnector extends IPSModule {
             $this->RegisterVariableInteger("BetriebsartHeizkreis".$i, "Betriebsart Heizkreis ".$i, "WCM.BetriebsartHK");
         }
         
+        $this->RegisterVariableInteger("KesselFehlercode", "Kessel Fehlercode");
+        $this->RegisterVariableInteger("KesselLaststellung", "Kessel Laststellung", "~Intensity.100");
+        $this->RegisterVariableFloat("KesselWaermeanforderung", "Kessel Wärmeanforderung", "~Temperature");
+        $this->RegisterVariableFloat("KesselAussentemperatur", "Kessel Außentemperatur", "~Temperature");
+        $this->RegisterVariableFloat("KesselVorlauftemperatur", "Kessel Vorlauftemperatur", "~Temperature");
+        
         $this->UpdateWCMStatus();
         $this->RequestAction("ParameterUpdate", $this->GetValue("ParameterUpdate"));
     }
@@ -58,7 +64,13 @@ class WCMConnector extends IPSModule {
         for($i = $this->ReadPropertyInteger("FirstHK"); $i <= $this->ReadPropertyInteger("LastHK"); $i++) {
             $bufferPositions["BetriebsartHeizkreis".$i] = $api->bufferedRequestBetriebsartHK($i);
         }
-        $api->bufferedUpdateBetriebsartHK(2, 3);
+        
+        $bufferPositions["KesselFehlercode"] = $api->bufferedRequestFehlercode();
+        $bufferPositions["KesselLaststellung"] = $api->bufferedRequestLaststellung();
+        $bufferPositions["KesselWaermeanforderung"] = $api->bufferedRequestWaermeanforderung();
+        $bufferPositions["KesselAussentemperatur"] = $api->bufferedRequestAussentemperatur();
+        $bufferPositions["KesselVorlauftemperatur"] = $api->bufferedRequestVorlauftemperatur();
+        
         $response = $api->sendBuffer();
         
         foreach($bufferPositions as $key => $value) {

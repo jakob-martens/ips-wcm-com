@@ -73,33 +73,6 @@ class Weishaupt {
         $this->username = $options->username;
         $this->password = $options->password;
     }
-    
-
-    /**
-     * Returns parameters present on Startsite
-     */
-    public function getHomeParameters(): FinalTelegramObjectCollection {
-        $body = [
-            "prot" => "coco",
-            "telegramm" => [
-                [0, 0, Operation["Lesen"], Info["Fehlercode"], 0, 0, 0, 0],
-                [10, 0, Operation["Lesen"], Info["Waermeanforderung"], 0, 0, 0, 0],
-                [10, 0, Operation["Lesen"], Info["Aussentemperatur"], 0, 0, 0, 0],
-                [10, 0, Operation["Lesen"], Info["Vorlauftemperatur"], 0, 0, 0, 0]
-            ]
-        ];
-
-        $res = $this->_callAPI("POST", $this->url."/parameter.json", $body);
-
-        if ($res["http_code"] != 200) {
-            if(!empty($res["curl_error"]))
-                throw new Exception("CURL error occurred: ".$res["curl_error"]);
-            else
-                throw new Exception("HTTP return code ".$res["http_code"]."\n".$res["header"].$res["body"]);
-        }
-
-        return $this->_decodeTelegram($res["header"]);
-    }
 
     /**
      * Returns the parameters present on WTC-G Process Parameter Page
@@ -131,6 +104,56 @@ class Weishaupt {
         return $this->_decodeTelegram($res["header"]);
     }
 
+    /**
+     * Adds a new telegram to the buffer and returns the buffer position
+     */
+    public function bufferedRequestLaststellung(): int {
+        $telegram = [10, 0, Operation["Lesen"], Info["Laststellung"], 0, 0, 0, 0];
+        $len = array_push($this->telegramRequestBuffer, $telegram);
+        
+        return $len - 1;
+    }
+    
+    /**
+     * Adds a new telegram to the buffer and returns the buffer position
+     */
+    public function bufferedRequestFehlercode(): int {
+        $telegram = [0, 0, Operation["Lesen"], Info["Fehlercode"], 0, 0, 0, 0];
+        $len = array_push($this->telegramRequestBuffer, $telegram);
+        
+        return $len - 1;
+    }
+    
+    /**
+     * Adds a new telegram to the buffer and returns the buffer position
+     */
+    public function bufferedRequestWaermeanforderung(): int {
+        $telegram = [10, 0, Operation["Lesen"], Info["Waermeanforderung"], 0, 0, 0, 0];
+        $len = array_push($this->telegramRequestBuffer, $telegram);
+        
+        return $len - 1;
+    }
+    
+    /**
+     * Adds a new telegram to the buffer and returns the buffer position
+     */
+    public function bufferedRequestAussentemperatur(): int {
+        $telegram = [10, 0, Operation["Lesen"], Info["Aussentemperatur"], 0, 0, 0, 0];
+        $len = array_push($this->telegramRequestBuffer, $telegram);
+        
+        return $len - 1;
+    }
+    
+    /**
+     * Adds a new telegram to the buffer and returns the buffer position
+     */
+    public function bufferedRequestVorlauftemperatur(): int {
+        $telegram = [10, 0, Operation["Lesen"], Info["Vorlauftemperatur"], 0, 0, 0, 0];
+        $len = array_push($this->telegramRequestBuffer, $telegram);
+        
+        return $len - 1;
+    }
+    
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
