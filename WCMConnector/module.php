@@ -58,7 +58,7 @@ class WCMConnector extends IPSModule {
         for($i = $this->ReadPropertyInteger("FirstHK"); $i <= $this->ReadPropertyInteger("LastHK"); $i++) {
             $bufferPositions["BetriebsartHeizkreis".$i] = $api->bufferedRequestBetriebsartHK($i);
         }
-        
+        $api->bufferedUpdateBetriebsartHK(2, 3);
         $response = $api->sendBuffer();
         
         foreach($bufferPositions as $key => $value) {

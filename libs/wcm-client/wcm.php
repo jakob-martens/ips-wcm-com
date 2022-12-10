@@ -73,47 +73,7 @@ class Weishaupt {
         $this->username = $options->username;
         $this->password = $options->password;
     }
-
-
-    public function getHKParameters(int $heizkreis): FinalTelegramObjectCollection {
-        $body = [
-            "prot" => "coco",
-            "telegramm" => [
-                [6, ($heizkreis - 1), Operation["Lesen"], Info["BetriebsartHK"], 0, 0, 0, 0]
-            ]
-        ];
-
-        $res = $this->_callAPI("POST", $this->url."/parameter.json", $body);
-
-        if ($res["http_code"] != 200) {
-            if(!empty($res["curl_error"]))
-                throw new Exception("CURL error occurred: ".$res["curl_error"]);
-            else
-                throw new Exception("HTTP return code ".$res["http_code"]."\n".$res["header"].$res["body"]);
-        }
-        
-        return $this->_decodeTelegram($res["header"]);
-    }
     
-    public function setHKParameters(int $heizkreis, BetriebsartHK $betriebsart): FinalTelegramObjectCollection {
-        $body = [
-            "prot" => "coco",
-            "telegramm" => [
-                [6, ($heizkreis - 1), Operation["Schreiben"], Info["BetriebsartHK"], 0, 0, $betriebsart->value, 0]
-            ]
-        ];
-
-        $res = $this->_callAPI("POST", $this->url."/parameter.json", $body);
-
-        if ($res["http_code"] != 200) {
-            if(!empty($res["curl_error"]))
-                throw new Exception("CURL error occurred: ".$res["curl_error"]);
-            else
-                throw new Exception("HTTP return code ".$res["http_code"]."\n".$res["header"].$res["body"]);
-        }
-        
-        return $this->_decodeTelegram($res["header"]);
-    }
 
     /**
      * Returns parameters present on Startsite
@@ -176,6 +136,16 @@ class Weishaupt {
      */
     public function bufferedRequestBetriebsartHK(int $heizkreis): int {
         $telegram = [6, ($heizkreis - 1), Operation["Lesen"], Info["BetriebsartHK"], 0, 0, 0, 0];
+        $len = array_push($this->telegramRequestBuffer, $telegram);
+        
+        return $len - 1;
+    }
+    
+     /**
+     * Adds a new telegram to the buffer and returns the buffer position
+     */
+   public function bufferedUpdateBetriebsartHK(int $heizkreis, BetriebsartHK $betriebsart): int {
+        $telegram = [6, ($heizkreis - 1), Operation["Schreiben"], Info["BetriebsartHK"], 0, 0, $betriebsart->value, 0]
         $len = array_push($this->telegramRequestBuffer, $telegram);
         
         return $len - 1;
