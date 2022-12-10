@@ -187,7 +187,7 @@ class Weishaupt {
     public function sendBuffer(): FinalTelegramObjectCollection {
         $body = [
             "prot" => "coco",
-            "telegramm" => array_column($this->telegramRequestBuffer, "telegram")
+            "telegramm" => $this->telegramRequestBuffer
         ];
 var_dump($body);
         $res = $this->_callAPI("POST", $this->url."/parameter.json", $body);
