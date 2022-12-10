@@ -7,16 +7,15 @@ class WCMConnector extends IPSModule {
     public function Create() {
         parent::Create();
         
+        $this->RegisterVariableBoolean("ParameterUpdate", "Parameter Update", "~Switch");
+        $this->EnableAction("ParameterUpdate");
+
         $this->RegisterPropertyString("URL", "");
         $this->RegisterPropertyString("Username", "");
         $this->RegisterPropertyString("Password", "");
         $this->RegisterPropertyInteger("UpdateInterval", 0);
         $this->RegisterPropertyInteger("FirstHK", 2);
         $this->RegisterPropertyInteger("LastHK", 5);
-        
-        $this->RegisterVariableBoolean("ParameterUpdate", "Parameter Update", "~Switch");
-        $this->EnableAction("ParameterUpdate");
-
         
         $this->RegisterTimer("Update", 0, "WCM_UpdateWCMStatus(".$this->InstanceID.");");
         
@@ -54,9 +53,16 @@ class WCMConnector extends IPSModule {
     public function UpdateWCMStatus() {
         $api = new Weishaupt(new WeishauptOptions($this->ReadPropertyString("URL"), $this->ReadPropertyString("Username"), $this->ReadPropertyString("Password")));
         
+        $bufferPositions = [];
+        
         for($i = $this->ReadPropertyInteger("FirstHK"); $i <= $this->ReadPropertyInteger("LastHK"); $i++) {
-            $params = $api->getHKParameters($i);
-            $this->SetValue("BetriebsartHeizkreis".$i, $params->getIterator()[0]->DATA);
+            $bufferPositions["BetriebsartHeizkreis".$i] = $api->bufferedRequestBetriebsartHK($i);
+        }
+        
+        $response = $api->sendBuffer();
+        
+        foreach($bufferPositions as $key => $value) {
+            $this->SetValue($key, $params->getIterator()[$value]->DATA);
         }
     }
     

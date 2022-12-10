@@ -65,6 +65,8 @@ class Weishaupt {
     private string $url;
     private string $username;
     private string $password;
+    
+    private array $telegramRequestBuffer = [];
 
     public function __construct(WeishauptOptions $options) {
         $this->url = $options->url;
@@ -170,19 +172,22 @@ class Weishaupt {
     }
 
     /**
-     * Returns the parameters from WCM-SOL Process Parameter Page
+     * Adds a new telegram to the buffer and returns the buffer position
      */
-    public function getWCMSOLProcessParameters(): FinalTelegramObjectCollection {
+    public function bufferedRequestBetriebsartHK(int $heizkreis): int {
+        $telegram = [6, ($heizkreis - 1), Operation["Lesen"], Info["BetriebsartHK"], 0, 0, 0, 0];
+        $len = array_push($this->telegramRequestBuffer, $telegram);
+        
+        return $len - 1;
+    }
+    
+    /**
+     * Sends buffered telegrams to WCM-COM (Reads and Updates)
+     */
+    public function sendBuffer(): FinalTelegramObjectCollection {
         $body = [
             "prot" => "coco",
-            "telegramm" => [
-                [3, 0, Operation["Lesen"], Info["T1Kollektor"], 0, 0, 0],
-                [3, 0, Operation["Lesen"], Info["Durchfluss"], 0, 0, 0],
-                [3, 0, Operation["Lesen"], Info["LeistungSolar"], 0, 0, 0],
-                [3, 0, Operation["Lesen"], Info["T2SolarUnten"], 0, 0, 0],
-                [3, 0, Operation["Lesen"], Info["B10PufferOben"], 0, 0, 0],
-                [3, 0, Operation["Lesen"], Info["B11PufferUnten"], 0, 0, 0]
-            ]
+            "telegramm" => array_column($this->telegramRequestBuffer, "telegram")
         ];
 
         $res = $this->_callAPI("POST", $this->url."/parameter.json", $body);
@@ -196,7 +201,14 @@ class Weishaupt {
 
         return $this->_decodeTelegram($res["header"]);
     }
-
+    
+    /**
+     * Clears the telegram buffer
+     */
+    public function clearBuffer() {
+        $this->telegramRequestBuffer = [];
+    }
+    
     /**
      * Decodes a Telegram given from API
      * @param body telegram as given as response from API
