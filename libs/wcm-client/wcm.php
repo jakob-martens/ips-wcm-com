@@ -168,7 +168,7 @@ class Weishaupt {
     }
     
     private function addBuffer(array $telegram): int {
-        if(len($this->telegramRequestBuffer) >= 8) {
+        if(count($this->telegramRequestBuffer) >= 8) {
             throw new Exception("Buffer cannot contain more than 8 telegrams.");
         }
         
