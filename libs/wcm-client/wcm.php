@@ -84,7 +84,7 @@ class Weishaupt {
         $res = $this->_callAPI("POST", $this->url."/parameter.json", $body);
 
         if ($res["http_code"] != 200) {
-            throw new Exception($res["body"]);
+            throw new Exception("HTTP return code ".$res["http_code"]."\n".$res["header"].$res["body"]);
         }
         
         return $this->_decodeTelegram($res["header"]);
