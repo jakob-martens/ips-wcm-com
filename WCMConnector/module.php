@@ -32,7 +32,6 @@ class WCMConnector extends IPSModule {
     }
     
     public function UpdateWCMStatus() {
-        echo $this->ReadPropertyString("URL");
         $api = new Weishaupt(new WeishauptOptions($this->ReadPropertyString("URL"), $this->ReadPropertyString("Username"), $this->ReadPropertyString("Password")));
         
         for($i = $this->ReadPropertyInteger("FirstHK"); $i <= $this->ReadPropertyInteger("LastHK"); $i++) {
