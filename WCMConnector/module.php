@@ -76,6 +76,8 @@ class WCMConnector extends IPSModule {
         foreach($bufferPositions as $key => $value) {
             $this->SetValue($key, $response->getIterator()[$value]->DATA);
         }
+        
+        $api->clearBuffer();
     }
     
     private function CreateVarProfileWCMBetriebsartHK() {
