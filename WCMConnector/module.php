@@ -60,7 +60,7 @@ class WCMConnector extends IPSModule {
         }
         
         $response = $api->sendBuffer();
-        var_dump($response);
+        
         foreach($bufferPositions as $key => $value) {
             $this->SetValue($key, $response->getIterator()[$value]->DATA);
         }

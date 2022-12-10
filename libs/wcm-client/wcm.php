@@ -189,7 +189,7 @@ class Weishaupt {
             "prot" => "coco",
             "telegramm" => $this->telegramRequestBuffer
         ];
-var_dump($body);
+        
         $res = $this->_callAPI("POST", $this->url."/parameter.json", $body);
 
         if ($res["http_code"] != 200) {
