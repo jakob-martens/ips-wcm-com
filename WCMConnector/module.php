@@ -15,6 +15,7 @@ class WCMConnector extends IPSModule {
         $this->RegisterPropertyInteger("LastHK", 5);
         
         $this->RegisterVariableBoolean("ParameterUpdate", "Parameter Update", "~Switch");
+        $this->EnableAction("ParameterUpdate");
 
         
         $this->RegisterTimer("Update", 0, "WCM_UpdateWCMStatus(".$this->InstanceID.");");
