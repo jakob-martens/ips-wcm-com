@@ -39,7 +39,6 @@ class WCMConnector extends IPSModule {
 
         switch($Ident) {
             case "ParameterUpdate":
-                echo "test";
                 //SetValue($this->GetIDForIdent($Ident), $Value);
                 break;
             default:
