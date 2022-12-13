@@ -45,12 +45,13 @@ class WCMConnector extends IPSModule {
             case "ParameterUpdate":
                 SetValue($this->GetIDForIdent($Ident), $Value);
                 
-                if($Value === True)
+                if($Value === True) {
                     $this->RetrieveWCMStatus(true);
                     $this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval") * 1000);
-                else
+                } else {
                     $this->SetTimerInterval("Update", 0);
                     $this->RetrieveWCMStatus(false);
+                }
                 break;
             default:
                 if(strpos($Ident, self::BETRIEBSART_HK_PREFIX) !== false) {
