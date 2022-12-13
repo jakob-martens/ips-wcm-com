@@ -71,10 +71,20 @@ class WCMConnector extends IPSModule {
         $bufferPositions["KesselAussentemperatur"] = $api->bufferedRequestAussentemperatur();
         $bufferPositions["KesselVorlauftemperatur"] = $api->bufferedRequestVorlauftemperatur();
         
-        $response = $api->sendBuffer();
+        $error = false;
+        try {
+            $response = $api->sendBuffer();
+        } catch(Exception $e) {
+            $error = true;
+            $this->LogMessage($e->getMessage(), KL_ERROR);
+        }
         
         foreach($bufferPositions as $key => $value) {
-            $this->SetValue($key, $response->getIterator()[$value]->DATA);
+            if($error == true) {
+                $this->SetValue($key, 0);
+            } else {
+                $this->SetValue($key, $response->getIterator()[$value]->DATA);
+            }
         }
         
         $api->clearBuffer();
