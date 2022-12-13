@@ -3,7 +3,6 @@ require __DIR__ . '/../libs/wcm-client/wcm.php';
 
 class WCMConnector extends IPSModule {
     private const BETRIEBSART_HK_PREFIX = "BetriebsartHeizkreis";
-    private Weishaupt $api;
 
     public function Create() {
         parent::Create();
@@ -25,9 +24,7 @@ class WCMConnector extends IPSModule {
     
     public function ApplyChanges() {
         parent::ApplyChanges();
-        
-        $this->api = new Weishaupt(new WeishauptOptions($this->ReadPropertyString("URL"), $this->ReadPropertyString("Username"), $this->ReadPropertyString("Password")));
-        
+                
         for($i = $this->ReadPropertyInteger("FirstHK"); $i <= $this->ReadPropertyInteger("LastHK"); $i++) {
             $this->RegisterVariableInteger(self::BETRIEBSART_HK_PREFIX.$i, "Betriebsart Heizkreis ".$i, "WCM.BetriebsartHK");
             $this->EnableAction(self::BETRIEBSART_HK_PREFIX.$i);
@@ -65,27 +62,31 @@ class WCMConnector extends IPSModule {
         
     }
     public function UpdateWCMBetriebsartHK(int $heizkreis, int $betriebsart) {
-        $this->api->bufferedUpdateBetriebsartHK($heizkreis, $betriebsart);
-        $this->api->sendBuffer();
-        $this->api->clearBuffer();
+        $api = new Weishaupt(new WeishauptOptions($this->ReadPropertyString("URL"), $this->ReadPropertyString("Username"), $this->ReadPropertyString("Password")));
+
+        $api->bufferedUpdateBetriebsartHK($heizkreis, $betriebsart);
+        $api->sendBuffer();
+        $api->clearBuffer();
     }
 
     public function RetrieveWCMStatus() {
+        $api = new Weishaupt(new WeishauptOptions($this->ReadPropertyString("URL"), $this->ReadPropertyString("Username"), $this->ReadPropertyString("Password")));
+
         $bufferPositions = [];
         
         for($i = $this->ReadPropertyInteger("FirstHK"); $i <= $this->ReadPropertyInteger("LastHK"); $i++) {
-            $bufferPositions[self::BETRIEBSART_HK_PREFIX.$i] = $this->api->bufferedRequestBetriebsartHK($i);
+            $bufferPositions[self::BETRIEBSART_HK_PREFIX.$i] = $api->bufferedRequestBetriebsartHK($i);
         }
         
-        //$bufferPositions["KesselFehlercode"] = $this->api->bufferedRequestFehlercode();
-        $bufferPositions["KesselLaststellung"] = $this->api->bufferedRequestLaststellung();
-        $bufferPositions["KesselWaermeanforderung"] = $this->api->bufferedRequestWaermeanforderung();
-        $bufferPositions["KesselAussentemperatur"] = $this->api->bufferedRequestAussentemperatur();
-        $bufferPositions["KesselVorlauftemperatur"] = $this->api->bufferedRequestVorlauftemperatur();
+        //$bufferPositions["KesselFehlercode"] = $api->bufferedRequestFehlercode();
+        $bufferPositions["KesselLaststellung"] = $api->bufferedRequestLaststellung();
+        $bufferPositions["KesselWaermeanforderung"] = $api->bufferedRequestWaermeanforderung();
+        $bufferPositions["KesselAussentemperatur"] = $api->bufferedRequestAussentemperatur();
+        $bufferPositions["KesselVorlauftemperatur"] = $api->bufferedRequestVorlauftemperatur();
         
         $error = false;
         try {
-            $response = $this->api->sendBuffer();
+            $response = $api->sendBuffer();
         } catch(Exception $e) {
             $error = true;
             $this->LogMessage($e->getMessage(), KL_ERROR);
@@ -99,7 +100,7 @@ class WCMConnector extends IPSModule {
             }
         }
         
-        $this->api->clearBuffer();
+        $api->clearBuffer();
     }
     
     private function CreateVarProfileWCMBetriebsartHK() {
