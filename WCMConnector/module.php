@@ -26,6 +26,8 @@ class WCMConnector extends IPSModule {
     public function ApplyChanges() {
         parent::ApplyChanges();
         
+        $this->api = new Weishaupt(new WeishauptOptions($this->ReadPropertyString("URL"), $this->ReadPropertyString("Username"), $this->ReadPropertyString("Password")));
+        
         for($i = $this->ReadPropertyInteger("FirstHK"); $i <= $this->ReadPropertyInteger("LastHK"); $i++) {
             $this->RegisterVariableInteger(self::BETRIEBSART_HK_PREFIX.$i, "Betriebsart Heizkreis ".$i, "WCM.BetriebsartHK");
             $this->EnableAction(self::BETRIEBSART_HK_PREFIX.$i);
@@ -39,8 +41,6 @@ class WCMConnector extends IPSModule {
         
         $this->RetrieveWCMStatus();
         $this->RequestAction("ParameterUpdate", $this->GetValue("ParameterUpdate"));
-        
-        $this->api = new Weishaupt(new WeishauptOptions($this->ReadPropertyString("URL"), $this->ReadPropertyString("Username"), $this->ReadPropertyString("Password")));
     }
     
     public function RequestAction($Ident, $Value) {
