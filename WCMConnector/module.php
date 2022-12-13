@@ -36,7 +36,6 @@ class WCMConnector extends IPSModule {
         $this->RegisterVariableFloat("KesselAussentemperatur", "Kessel Außentemperatur", "~Temperature");
         $this->RegisterVariableFloat("KesselVorlauftemperatur", "Kessel Vorlauftemperatur", "~Temperature");
         
-        $this->RetrieveWCMStatus();
         $this->RequestAction("ParameterUpdate", $this->GetValue("ParameterUpdate"));
     }
     
@@ -47,6 +46,7 @@ class WCMConnector extends IPSModule {
                 SetValue($this->GetIDForIdent($Ident), $Value);
                 
                 if($Value === True)
+                    $this->RetrieveWCMStatus(true);
                     $this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval") * 1000);
                 else
                     $this->SetTimerInterval("Update", 0);
