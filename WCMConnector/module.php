@@ -3,6 +3,7 @@ require __DIR__ . '/../libs/wcm-client/wcm.php';
 
 class WCMConnector extends IPSModule {
     private const BETRIEBSART_HK_PREFIX = "BetriebsartHeizkreis";
+    private Weishaupt $api;
 
     public function Create() {
         parent::Create();
