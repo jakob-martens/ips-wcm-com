@@ -50,6 +50,7 @@ class WCMConnector extends IPSModule {
                     $this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval") * 1000);
                 else
                     $this->SetTimerInterval("Update", 0);
+                    $this->RetrieveWCMStatus(false);
                 break;
             default:
                 if(strpos($Ident, self::BETRIEBSART_HK_PREFIX) !== false) {
@@ -69,7 +70,7 @@ class WCMConnector extends IPSModule {
         $api->clearBuffer();
     }
 
-    public function RetrieveWCMStatus() {
+    public function RetrieveWCMStatus(bool $sendBuffer = true) {
         $api = new Weishaupt(new WeishauptOptions($this->ReadPropertyString("URL"), $this->ReadPropertyString("Username"), $this->ReadPropertyString("Password")));
 
         $bufferPositions = [];
@@ -85,15 +86,17 @@ class WCMConnector extends IPSModule {
         $bufferPositions["KesselVorlauftemperatur"] = $api->bufferedRequestVorlauftemperatur();
         
         $error = false;
-        try {
-            $response = $api->sendBuffer();
-        } catch(Exception $e) {
-            $error = true;
-            $this->LogMessage($e->getMessage(), KL_ERROR);
+        if($sendBuffer == true) {
+            try {
+                $response = $api->sendBuffer();
+            } catch(Exception $e) {
+                $error = true;
+                $this->LogMessage($e->getMessage(), KL_ERROR);
+            }
         }
         
         foreach($bufferPositions as $key => $value) {
-            if($error == true) {
+            if($error == true || $sendBuffer == false) {
                 $this->SetValue($key, 0);
             } else {
                 $this->SetValue($key, $response->getIterator()[$value]->DATA);
