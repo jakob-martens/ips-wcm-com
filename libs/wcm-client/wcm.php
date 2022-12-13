@@ -195,7 +195,12 @@ class Weishaupt {
                 throw new Exception("HTTP return code ".$res["http_code"]."\n".$res["header"].$res["body"]);
         }
 
-        return $this->_decodeTelegram($res["header"]);
+        // If WCM-COM server is busy and doesn't return a response
+        if(stripos($res["header"], "server is busy") !== false) {
+            throw new Exception("WCM-COM server is busy.");
+        } else {
+            return $this->_decodeTelegram($res["header"]);
+        }
     }
     
     /**
