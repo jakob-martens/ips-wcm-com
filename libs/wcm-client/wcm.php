@@ -39,7 +39,7 @@ class FinalTelegramObject {
 class TelegramObjectCollection implements IteratorAggregate {
     protected array $items = [];
 
-    public function add(TelegramObject $telegramObject): void {
+    public function add(TelegramObject $telegramObject) : void {
         $this->items[] = $telegramObject;
     }
 
@@ -51,12 +51,8 @@ class TelegramObjectCollection implements IteratorAggregate {
 class FinalTelegramObjectCollection implements IteratorAggregate {
     protected array $items = [];
 
-    public function add(FinalTelegramObject $telegramObject): void {
+    public function add(FinalTelegramObject $telegramObject) : void {
         $this->items[] = $telegramObject;
-    }
-
-    public function addCollection(FinalTelegramObjectCollection $telegramObjectCollection): void {
-        $this->items = array_merge($this->items, $telegramObjectCollection->getIterator()->getArrayCopy());
     }
 
     public function getIterator() : Traversable {
@@ -121,6 +117,10 @@ class Weishaupt {
      * Adds a new telegram to the buffer and returns the buffer position
      */
     public function bufferedRequestFehlercode(): int {
+        if(count($this->telegramRequestBuffer) > 0) {
+            throw new Exception("'Fehlercode' needs to be the first telegram.");
+        }
+        
         $telegram = [0, 0, Operation["Lesen"], Info["Fehlercode"], 0, 0, 0, 0];
 
         return $this->addBuffer($telegram);
@@ -181,33 +181,26 @@ class Weishaupt {
      * Sends buffered telegrams to WCM-COM (Reads and Updates)
      */
     public function sendBuffer(): FinalTelegramObjectCollection {
-        $chunks = array_chunk($this->telegramRequestBuffer, 9);
-        $finalRes = new FinalTelegramObjectCollection();
+        $body = [
+            "prot" => "coco",
+            "telegramm" => $this->telegramRequestBuffer
+        ];
         
-        foreach($chunks as $chunk) {
-            $body = [
-                "prot" => "coco",
-                "telegramm" => $chunk
-            ];
-            
-            $res = $this->_callAPI("POST", $this->url."/parameter.json", $body);
+        $res = $this->_callAPI("POST", $this->url."/parameter.json", $body);
 
-            if ($res["http_code"] != 200) {
-                if(!empty($res["curl_error"]))
-                    throw new Exception("CURL error occurred: ".$res["curl_error"]);
-                else
-                    throw new Exception("HTTP return code ".$res["http_code"]."\n".$res["header"].$res["body"]);
-            }
-
-            // If WCM-COM server is busy and doesn't return a response
-            if(stripos($res["header"], "server is busy") !== false) {
-                throw new Exception("WCM-COM server is busy.");
-            } else {
-                $finalRes->addCollection($this->_decodeTelegram($res["header"]));
-            }
+        if ($res["http_code"] != 200) {
+            if(!empty($res["curl_error"]))
+                throw new Exception("CURL error occurred: ".$res["curl_error"]);
+            else
+                throw new Exception("HTTP return code ".$res["http_code"]."\n".$res["header"].$res["body"]);
         }
-        
-        return $finalRes;
+
+        // If WCM-COM server is busy and doesn't return a response
+        if(stripos($res["header"], "server is busy") !== false) {
+            throw new Exception("WCM-COM server is busy.");
+        } else {
+            return $this->_decodeTelegram($res["header"]);
+        }
     }
     
     /**
