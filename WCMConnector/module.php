@@ -96,7 +96,7 @@ class WCMConnector extends IPSModule {
                 $this->LogMessage($e->getMessage(), KL_ERROR);
             }
         }
-        var_dump($response);
+        
         foreach($bufferPositions as $key => $value) {
             if($error == true || $sendBuffer == false) {
                 $this->SetValue($key, 0);
