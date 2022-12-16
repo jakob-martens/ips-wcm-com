@@ -76,11 +76,12 @@ class WCMConnector extends IPSModule {
 
         $bufferPositions = [];
         
+        $bufferPositions["KesselFehlercode"] = $api->bufferedRequestFehlercode();
+
         for($i = $this->ReadPropertyInteger("FirstHK"); $i <= $this->ReadPropertyInteger("LastHK"); $i++) {
             $bufferPositions[self::BETRIEBSART_HK_PREFIX.$i] = $api->bufferedRequestBetriebsartHK($i);
         }
         
-        $bufferPositions["KesselFehlercode"] = $api->bufferedRequestFehlercode();
         $bufferPositions["KesselLaststellung"] = $api->bufferedRequestLaststellung();
         $bufferPositions["KesselWaermeanforderung"] = $api->bufferedRequestWaermeanforderung();
         $bufferPositions["KesselAussentemperatur"] = $api->bufferedRequestAussentemperatur();
