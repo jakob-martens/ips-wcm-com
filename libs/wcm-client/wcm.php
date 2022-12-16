@@ -181,7 +181,7 @@ class Weishaupt {
      * Sends buffered telegrams to WCM-COM (Reads and Updates)
      */
     public function sendBuffer(): FinalTelegramObjectCollection {
-        $chunks = array_chunk($this->telegramRequestBuffer, 8);
+        $chunks = array_chunk($this->telegramRequestBuffer, 9);
         $finalRes = new FinalTelegramObjectCollection();
         
         foreach($chunks as $chunk) {
