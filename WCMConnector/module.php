@@ -90,7 +90,7 @@ class WCMConnector extends IPSModule {
         $bufferPositions["KesselAussentemperatur"] = $api->bufferedRequestAussentemperatur();
         //$bufferPositions["KesselGedaempfteAussentemperatur"] = $api->bufferedRequestGedaempfteAussentemperatur();
         $bufferPositions["KesselWaermeanforderung"] = $api->bufferedRequestWaermeanforderung();
-        $bufferPositions["KesselVorlauftemperatur"] = $api->bufferedRequestVorlauftemperatur();
+        //$bufferPositions["KesselVorlauftemperatur"] = $api->bufferedRequestVorlauftemperatur();
         //$bufferPositions["KesselVorlauftemperaturEstb"] = $api->bufferedRequestVorlauftemperaturEstb();
         //$bufferPositions["KesselWarmwassertemperatur"] = $api->bufferedRequestWarmwassertemperatur();
         $bufferPositions["KesselAbgastemperatur"] = $api->bufferedRequestAbgastemperatur();
