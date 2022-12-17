@@ -75,35 +75,14 @@ class Weishaupt {
     }
 
     /**
-     * Returns the parameters present on WTC-G Process Parameter Page
+     * Adds a new telegram to the buffer and returns the buffer position
      */
-    public function getWTCGProcessParameters(): FinalTelegramObjectCollection {
-        $body = [
-            "prot" => "coco",
-            "telegramm" => [
-                [10, 0, Operation["Lesen"], Info["Laststellung"], 0, 0, 0, 0],
-                [10, 0, Operation["Lesen"], Info["GedaempfteAussentemperatur"], 0, 0, 0, 0],
-                [10, 0, Operation["Lesen"], Info["Waermeanforderung"], 0, 0, 0, 0],
-                [10, 0, Operation["Lesen"], Info["VorlauftemperaturEstb"], 0, 0, 0, 0],
-                [10, 0, Operation["Lesen"], Info["Abgastemperatur"], 0, 0, 0, 0],
-                [10, 0, Operation["Lesen"], Info["Aussentemperatur"], 0, 0, 0, 0],
-                [10, 0, Operation["Lesen"], Info["Warmwassertemperatur"], 0, 0, 0, 0],
-                [10, 0, Operation["Lesen"], Info["Betriebsphase"], 0, 0, 0, 0]
-            ]
-        ];
+    public function bufferedRequestWarmwassertemperatur(): int {
+        $telegram = [10, 0, Operation["Lesen"], Info["Warmwassertemperatur"], 0, 0, 0, 0];
 
-        $res = $this->_callAPI("POST", $this->url."/parameter.json", $body);
-
-        if ($res["http_code"] != 200) {
-            if(!empty($res["curl_error"]))
-                throw new Exception("CURL error occurred: ".$res["curl_error"]);
-            else
-                throw new Exception("HTTP return code ".$res["http_code"]."\n".$res["header"].$res["body"]);
-        }
-
-        return $this->_decodeTelegram($res["header"]);
+        return $this->addBuffer($telegram);
     }
-
+    
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
@@ -129,6 +108,15 @@ class Weishaupt {
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
+    public function bufferedRequestAbgastemperatur(): int {
+        $telegram = [10, 0, Operation["Lesen"], Info["Abgastemperatur"], 0, 0, 0, 0];
+
+        return $this->addBuffer($telegram);
+    }
+    
+    /**
+     * Adds a new telegram to the buffer and returns the buffer position
+     */
     public function bufferedRequestWaermeanforderung(): int {
         $telegram = [10, 0, Operation["Lesen"], Info["Waermeanforderung"], 0, 0, 0, 0];
 
@@ -147,8 +135,26 @@ class Weishaupt {
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
+    public function bufferedRequestGedaempfteAussentemperatur(): int {
+        $telegram = [10, 0, Operation["Lesen"], Info["GedaempfteAussentemperatur"], 0, 0, 0, 0];
+
+        return $this->addBuffer($telegram);
+    }
+    
+    /**
+     * Adds a new telegram to the buffer and returns the buffer position
+     */
     public function bufferedRequestVorlauftemperatur(): int {
         $telegram = [10, 0, Operation["Lesen"], Info["Vorlauftemperatur"], 0, 0, 0, 0];
+
+        return $this->addBuffer($telegram);
+    }
+    
+    /**
+     * Adds a new telegram to the buffer and returns the buffer position
+     */
+    public function bufferedRequestVorlauftemperaturEstb(): int {
+        $telegram = [10, 0, Operation["Lesen"], Info["VorlauftemperaturEstb"], 0, 0, 0, 0];
 
         return $this->addBuffer($telegram);
     }

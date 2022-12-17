@@ -31,10 +31,14 @@ class WCMConnector extends IPSModule {
         }
         
         $this->RegisterVariableInteger("KesselFehlercode", "Kessel Fehlercode");
+        $this->RegisterVariableFloat("KesselAussentemperatur", "Kessel Außentemperatur", "~Temperature");
+        $this->RegisterVariableFloat("KesselGedaempfteAussentemperatur", "Kessel Gedämpfte Außentemperatur", "~Temperature");
         $this->RegisterVariableInteger("KesselLaststellung", "Kessel Laststellung", "~Intensity.100");
         $this->RegisterVariableFloat("KesselWaermeanforderung", "Kessel Wärmeanforderung", "~Temperature");
-        $this->RegisterVariableFloat("KesselAussentemperatur", "Kessel Außentemperatur", "~Temperature");
         $this->RegisterVariableFloat("KesselVorlauftemperatur", "Kessel Vorlauftemperatur", "~Temperature");
+        $this->RegisterVariableFloat("KesselVorlauftemperaturEstb", "Kessel Vorlauftemperatur eSTB", "~Temperature");
+        $this->RegisterVariableFloat("KesselWarmwassertemperatur", "Kessel Warmwassertemperatur", "~Temperature");
+        $this->RegisterVariableFloat("KesselAbgastemperatur", "Kessel Abgastemperatur", "~Temperature");
         
         $this->RequestAction("ParameterUpdate", $this->GetValue("ParameterUpdate"));
     }
@@ -83,10 +87,14 @@ class WCMConnector extends IPSModule {
         }
         
         $bufferPositions["KesselLaststellung"] = $api->bufferedRequestLaststellung();
-        $bufferPositions["KesselWaermeanforderung"] = $api->bufferedRequestWaermeanforderung();
         $bufferPositions["KesselAussentemperatur"] = $api->bufferedRequestAussentemperatur();
+        $bufferPositions["KesselGedaempfteAussentemperatur"] = $api->bufferedRequestGedaempfteAussentemperatur();
+        $bufferPositions["KesselWaermeanforderung"] = $api->bufferedRequestWaermeanforderung();
         $bufferPositions["KesselVorlauftemperatur"] = $api->bufferedRequestVorlauftemperatur();
-        
+        $bufferPositions["KesselVorlauftemperaturEstb"] = $api->bufferedRequestVorlauftemperaturEstb();
+        $bufferPositions["KesselWarmwassertemperatur"] = $api->bufferedRequestWarmwassertemperatur();
+        $bufferPositions["KesselAbgastemperatur"] = $api->bufferedRequestAbgastemperatur();
+
         $error = false;
         if($sendBuffer == true) {
             try {
