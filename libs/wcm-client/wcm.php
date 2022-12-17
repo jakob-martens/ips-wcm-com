@@ -54,7 +54,11 @@ class FinalTelegramObjectCollection implements IteratorAggregate {
     public function add(FinalTelegramObject $telegramObject) : void {
         $this->items[] = $telegramObject;
     }
-
+    
+    public function addCollection(FinalTelegramObjectCollection $telegramObjectCollection): void {
+        $this->items = array_merge($this->items, $telegramObjectCollection->getIterator()->getArrayCopy());
+    }
+    
     public function getIterator() : Traversable {
         return new ArrayIterator($this->items);
     }
