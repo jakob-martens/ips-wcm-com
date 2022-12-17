@@ -187,26 +187,33 @@ class Weishaupt {
      * Sends buffered telegrams to WCM-COM (Reads and Updates)
      */
     public function sendBuffer(): FinalTelegramObjectCollection {
-        $body = [
-            "prot" => "coco",
-            "telegramm" => $this->telegramRequestBuffer
-        ];
+        $chunks = array_chunk($this->telegramRequestBuffer, 9);
+        $finalRes = new FinalTelegramObjectCollection();
         
-        $res = $this->_callAPI("POST", $this->url."/parameter.json", $body);
+        foreach($chunks as $chunk) {
+            $body = [
+                "prot" => "coco",
+                "telegramm" => $chunk
+            ];
+            
+            $res = $this->_callAPI("POST", $this->url."/parameter.json", $body);
 
-        if ($res["http_code"] != 200) {
-            if(!empty($res["curl_error"]))
-                throw new Exception("CURL error occurred: ".$res["curl_error"]);
-            else
-                throw new Exception("HTTP return code ".$res["http_code"]."\n".$res["header"].$res["body"]);
-        }
+            if ($res["http_code"] != 200) {
+                if(!empty($res["curl_error"]))
+                    throw new Exception("CURL error occurred: ".$res["curl_error"]);
+                else
+                    throw new Exception("HTTP return code ".$res["http_code"]."\n".$res["header"].$res["body"]);
+            }
 
-        // If WCM-COM server is busy and doesn't return a response
-        if(stripos($res["header"], "server is busy") !== false) {
-            throw new Exception("WCM-COM server is busy.");
-        } else {
-            return $this->_decodeTelegram($res["header"]);
+            // If WCM-COM server is busy and doesn't return a response
+            if(stripos($res["header"], "server is busy") !== false) {
+                throw new Exception("WCM-COM server is busy.");
+            } else {
+                $finalRes->addCollection($this->_decodeTelegram($res["header"]));
+            }
         }
+        
+        return $finalRes;
     }
     
     /**
