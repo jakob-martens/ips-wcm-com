@@ -200,7 +200,7 @@ class Weishaupt {
                 "telegramm" => $chunk
             ];
             
-            $NUM_OF_ATTEMPTS = 5;
+            $NUM_OF_ATTEMPTS = 10;
             $attempts = 0;
             do {
                 try {
