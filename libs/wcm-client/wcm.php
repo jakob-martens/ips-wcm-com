@@ -221,7 +221,8 @@ class Weishaupt {
                     }
                 } catch(Exception $e) {
                     $attempts++;
-                    sleep(1);
+                    usleep(rand(250000, 1000000));
+                    usleep(rand(250000, 1000000));
                     if($attempts >= $NUM_OF_ATTEMPTS) {
                         throw $e;
                     }
