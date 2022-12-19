@@ -200,21 +200,36 @@ class Weishaupt {
                 "telegramm" => $chunk
             ];
             
-            $res = $this->_callAPI("POST", $this->url."/parameter.json", $body);
+            $NUM_OF_ATTEMPTS = 5;
+            $attempts = 0;
+            do {
+                try {
+                    $res = $this->_callAPI("POST", $this->url."/parameter.json", $body);
 
-            if ($res["http_code"] != 200) {
-                if(!empty($res["curl_error"]))
-                    throw new Exception("CURL error occurred: ".$res["curl_error"]);
-                else
-                    throw new Exception("HTTP return code ".$res["http_code"]."\n".$res["header"].$res["body"]);
-            }
+                    if ($res["http_code"] != 200) {
+                        if(!empty($res["curl_error"]))
+                            throw new Exception("CURL error occurred: ".$res["curl_error"]);
+                        else
+                            throw new Exception("HTTP return code ".$res["http_code"]."\n".$res["header"].$res["body"]);
+                    }
 
-            // If WCM-COM server is busy and doesn't return a response
-            if(stripos($res["header"], "server is busy") !== false) {
-                throw new Exception("WCM-COM server is busy.");
-            } else {
-                $finalRes->addCollection($this->_decodeTelegram($res["header"]));
-            }
+                    // If WCM-COM server is busy and doesn't return a response
+                    if(stripos($res["header"], "server is busy") !== false) {
+                        throw new Exception("WCM-COM server is busy.");
+                    } else {
+                        $finalRes->addCollection($this->_decodeTelegram($res["header"]));
+                    }
+                } catch(Exception $e) {
+                    $attempts++;
+                    sleep(1);
+                    if($attempts >= $NUM_OF_ATTEMPTS) {
+                        throw $e;
+                    }
+                    continue;
+                }
+                
+                break;
+            } while(true);
         }
         
         return $finalRes;
