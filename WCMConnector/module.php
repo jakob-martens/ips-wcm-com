@@ -59,8 +59,8 @@ class WCMConnector extends IPSModule {
                 break;
             default:
                 if(strpos($Ident, self::BETRIEBSART_HK_PREFIX) !== false) {
-                    SetValue($this->GetIDForIdent($Ident), $Value);
                     $this->UpdateWCMBetriebsartHK(intval(substr($Ident, strlen(self::BETRIEBSART_HK_PREFIX))), $Value);
+                    SetValue($this->GetIDForIdent($Ident), $Value);
                 } else {
                     throw new Exception("Invalid Ident");
                 }
