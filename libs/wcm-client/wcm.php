@@ -190,7 +190,7 @@ class Weishaupt {
     /**
      * Sends buffered telegrams to WCM-COM (Reads and Updates)
      */
-    public function sendBuffer(): FinalTelegramObjectCollection {
+    public function sendBuffer($NUM_OF_ATTEMPTS = 3): FinalTelegramObjectCollection {
         $chunks = array_chunk($this->telegramRequestBuffer, 9);
         $finalRes = new FinalTelegramObjectCollection();
         
@@ -200,7 +200,6 @@ class Weishaupt {
                 "telegramm" => $chunk
             ];
             
-            $NUM_OF_ATTEMPTS = 10;
             $attempts = 0;
             do {
                 try {
@@ -221,8 +220,8 @@ class Weishaupt {
                     }
                 } catch(Exception $e) {
                     $attempts++;
-                    usleep(rand(250000, 1000000));
-                    usleep(rand(250000, 1000000));
+                    usleep(rand(500000, 1000000));
+                    usleep(rand(500000, 1000000));
                     if($attempts >= $NUM_OF_ATTEMPTS) {
                         throw $e;
                     }

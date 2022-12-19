@@ -71,7 +71,7 @@ class WCMConnector extends IPSModule {
         $api = new Weishaupt(new WeishauptOptions($this->ReadPropertyString("URL"), $this->ReadPropertyString("Username"), $this->ReadPropertyString("Password")));
 
         $api->bufferedUpdateBetriebsartHK($heizkreis, $betriebsart);
-        $api->sendBuffer();
+        $api->sendBuffer(10);
         $api->clearBuffer();
     }
 
