@@ -249,7 +249,7 @@ class Weishaupt {
     private function _decodeTelegram(string $body): FinalTelegramObjectCollection {
         $response = new TelegramObjectCollection();
 
-        $decoded = json_decode($body);
+        $decoded = json_decode($body, $associative = false, $flags = JSON_THROW_ON_ERROR);
 
         $telegramArray = $decoded->telegramm;
         
