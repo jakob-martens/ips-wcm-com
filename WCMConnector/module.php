@@ -37,6 +37,7 @@ class WCMConnector extends IPSModule {
         $this->RegisterVariableFloat("KesselWaermeanforderung", "Kessel Wärmeanforderung", "~Temperature");
         $this->RegisterVariableFloat("KesselVorlauftemperatur", "Kessel Vorlauftemperatur", "~Temperature");
         $this->RegisterVariableFloat("KesselVorlauftemperaturEstb", "Kessel Vorlauftemperatur eSTB", "~Temperature");
+        $this->RegisterVariableFloat("KesselRuecklauftemperatur", "Kessel Rücklauftemperatur", "~Temperature");
         $this->RegisterVariableFloat("KesselWarmwassertemperatur", "Kessel Warmwassertemperatur", "~Temperature");
         $this->RegisterVariableFloat("KesselAbgastemperatur", "Kessel Abgastemperatur", "~Temperature");
         
@@ -92,6 +93,7 @@ class WCMConnector extends IPSModule {
         $bufferPositions["KesselWaermeanforderung"] = $api->bufferedRequestWaermeanforderung();
         $bufferPositions["KesselVorlauftemperatur"] = $api->bufferedRequestVorlauftemperatur();
         $bufferPositions["KesselVorlauftemperaturEstb"] = $api->bufferedRequestVorlauftemperaturEstb();
+        $bufferPositions["KesselRuecklauftemperatur"] = $api->bufferedRequestRuecklauftemperatur();
         $bufferPositions["KesselWarmwassertemperatur"] = $api->bufferedRequestWarmwassertemperatur();
         $bufferPositions["KesselAbgastemperatur"] = $api->bufferedRequestAbgastemperatur();
 

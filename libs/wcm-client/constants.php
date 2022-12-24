@@ -33,6 +33,8 @@ const Info = array(
     /** Divide by 10 */
     "Warmwassertemperatur" => 14,
     /** Divide by 10 */
+    "Ruecklauftemperatur" => 22,
+    /** Divide by 10 */
     "B10PufferOben" => 118,
     /** Divide by 10 */
     "B11PufferUnten" => 120,

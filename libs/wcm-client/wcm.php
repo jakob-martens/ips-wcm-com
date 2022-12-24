@@ -81,6 +81,15 @@ class Weishaupt {
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
+    public function bufferedRequestRuecklauftemperatur(): int {
+        $telegram = [10, 0, Operation["Lesen"], Info["Ruecklauftemperatur"], 0, 0, 0, 0];
+
+        return $this->addBuffer($telegram);
+    }
+    
+    /**
+     * Adds a new telegram to the buffer and returns the buffer position
+     */
     public function bufferedRequestWarmwassertemperatur(): int {
         $telegram = [10, 0, Operation["Lesen"], Info["Warmwassertemperatur"], 0, 0, 0, 0];
 
@@ -308,6 +317,7 @@ class Weishaupt {
             case Info["Waermeanforderung"]:
             case Info["Aussentemperatur"]:
             case Info["Warmwassertemperatur"]:
+            case Info["Ruecklauftemperatur"]:
             case Info["Abgastemperatur"]:
             case Info["Vorlauftemperatur"]:
             case Info["T2SolarUnten"]:
