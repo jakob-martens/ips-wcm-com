@@ -226,7 +226,7 @@ class Weishaupt {
                     if(stripos($res["header"], "server is busy") !== false) {
                         throw new Exception("WCM-COM server is busy.");
                     } else {
-                        $resTelegramCol = $this->_decodeTelegram($res["header"];
+                        $resTelegramCol = $this->_decodeTelegram($res["header"]);
                         
                         // Check that infoNr of requests match with infoNr of response
                         foreach($resTelegramCol->getIterator() as $pos => $telegram) {
