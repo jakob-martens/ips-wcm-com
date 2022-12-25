@@ -230,7 +230,7 @@ class Weishaupt {
                         
                         // Check that infoNr of requests match with infoNr of response
                         foreach($resTelegramCol->getIterator() as $pos => $telegram) {
-                            if($telegram->INFONR != $chunk[3]) {
+                            if($telegram->INFONR != $chunk[$pos][3]) {
                                 throw new Exception("WCM response doesn't match the requests!");
                             }
                         }
