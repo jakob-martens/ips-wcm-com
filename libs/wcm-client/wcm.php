@@ -235,7 +235,7 @@ class Weishaupt {
                             }
                         }
                         
-                        $finalRes->addCollection($resTelegramCol));
+                        $finalRes->addCollection($resTelegramCol);
                     }
                 } catch(Exception $e) {
                     $attempts++;
