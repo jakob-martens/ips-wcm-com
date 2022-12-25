@@ -214,6 +214,7 @@ class Weishaupt {
                 try {
                     $res = $this->_callAPI("POST", $this->url."/parameter.json", $body);
 
+                    // Throw exception if http or curl error occurred
                     if ($res["http_code"] != 200) {
                         if(!empty($res["curl_error"]))
                             throw new Exception("CURL error occurred: ".$res["curl_error"]);
@@ -225,7 +226,16 @@ class Weishaupt {
                     if(stripos($res["header"], "server is busy") !== false) {
                         throw new Exception("WCM-COM server is busy.");
                     } else {
-                        $finalRes->addCollection($this->_decodeTelegram($res["header"]));
+                        $resTelegramCol = $this->_decodeTelegram($res["header"];
+                        
+                        // Check that infoNr of requests match with infoNr of response
+                        foreach($resTelegramCol->getIterator() as $pos => $telegram) {
+                            if($telegram->INFONR != $chunk[3]) {
+                                throw new Exception("WCM response doesn't match the requests!");
+                            }
+                        }
+                        
+                        $finalRes->addCollection($resTelegramCol));
                     }
                 } catch(Exception $e) {
                     $attempts++;
@@ -259,10 +269,12 @@ class Weishaupt {
         $response = new TelegramObjectCollection();
 
         $decoded = json_decode($body, $associative = false, $flags = JSON_THROW_ON_ERROR);
-
-        $telegramArray = $decoded->telegramm;
         
-        foreach($telegramArray as $telegramEntry) {
+        if(!isset($decoded) || !isset($decoded->telegramm)) {
+            throw new Exception("Invalid WCM response. Response is empty.");
+        }
+        
+        foreach($decoded->telegramm as $telegramEntry) {
             $respObj = new TelegramObject();
             foreach($telegramEntry as $i => $value) {
                 $attributeName = array_search($i, Type);
