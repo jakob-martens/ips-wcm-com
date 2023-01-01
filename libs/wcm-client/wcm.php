@@ -372,6 +372,8 @@ class Weishaupt {
             case Info["B11PufferUnten"]:
             case Info["B10PufferOben"]:
             case Info["T1Kollektor"]:
+            case Info["MaxLeistungHeizung"]:
+            case Info["MaxLeistungWW"]:
                 $val = $this->_extractValue($telegramObject->DATA, $telegramObject->HIGH_BYTE);
                 return (int) ($val / 10);
             case Info["LeistungSolar"]:
