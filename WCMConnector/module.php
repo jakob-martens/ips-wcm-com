@@ -65,9 +65,11 @@ class WCMConnector extends IPSModule {
             case "KesselMaxLeistungHeizung":
                 $this->UpdateWCMMaxLeistungHeizung($Value);
                 SetValue($this->GetIDForIdent($Ident), $Value);
+                break;
             case "KesselMaxLeistungWW":
                 $this->UpdateWCMMaxLeistungWW($Value);
                 SetValue($this->GetIDForIdent($Ident), $Value);
+                break;
             default:
                 if(strpos($Ident, self::BETRIEBSART_HK_PREFIX) !== false) {
                     $this->UpdateWCMBetriebsartHK(intval(substr($Ident, strlen(self::BETRIEBSART_HK_PREFIX))), $Value);
