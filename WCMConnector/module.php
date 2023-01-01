@@ -34,6 +34,10 @@ class WCMConnector extends IPSModule {
         $this->RegisterVariableFloat("KesselAussentemperatur", "Kessel Außentemperatur", "~Temperature");
         $this->RegisterVariableFloat("KesselGedaempfteAussentemperatur", "Kessel Gedämpfte Außentemperatur", "~Temperature");
         $this->RegisterVariableInteger("KesselLaststellung", "Kessel Laststellung", "~Intensity.100");
+        $this->RegisterVariableInteger("KesselMaxLeistungHeizung", "Kessel Max. Leistung Heizung", "~Intensity.100");
+        $this->EnableAction("KesselMaxLeistungHeizung");
+        $this->RegisterVariableInteger("KesselMaxLeistungWW", "Kessel Max. Leistung WW", "~Intensity.100");
+        $this->EnableAction("KesselMaxLeistungWW");
         $this->RegisterVariableFloat("KesselWaermeanforderung", "Kessel Wärmeanforderung", "~Temperature");
         $this->RegisterVariableFloat("KesselVorlauftemperatur", "Kessel Vorlauftemperatur", "~Temperature");
         $this->RegisterVariableFloat("KesselVorlauftemperaturEstb", "Kessel Vorlauftemperatur eSTB", "~Temperature");
@@ -58,6 +62,12 @@ class WCMConnector extends IPSModule {
                     $this->RetrieveWCMStatus(false);
                 }
                 break;
+            case "KesselMaxLeistungHeizung":
+                $this->UpdateWCMMaxLeistungHeizung($Value);
+                SetValue($this->GetIDForIdent($Ident), $Value);
+            case "KesselMaxLeistungWW":
+                $this->UpdateWCMMaxLeistungWW($Value);
+                SetValue($this->GetIDForIdent($Ident), $Value);
             default:
                 if(strpos($Ident, self::BETRIEBSART_HK_PREFIX) !== false) {
                     $this->UpdateWCMBetriebsartHK(intval(substr($Ident, strlen(self::BETRIEBSART_HK_PREFIX))), $Value);
@@ -76,6 +86,22 @@ class WCMConnector extends IPSModule {
         $api->clearBuffer();
     }
 
+    public function UpdateWCMMaxLeistungHeizung(int $maxLeistung) {
+        $api = new Weishaupt(new WeishauptOptions($this->ReadPropertyString("URL"), $this->ReadPropertyString("Username"), $this->ReadPropertyString("Password")));
+
+        $api->bufferedUpdateMaxLeistungHeizung($maxLeistung);
+        $api->sendBuffer(10);
+        $api->clearBuffer();
+    }
+
+    public function UpdateWCMMaxLeistungWW(int $maxLeistung) {
+        $api = new Weishaupt(new WeishauptOptions($this->ReadPropertyString("URL"), $this->ReadPropertyString("Username"), $this->ReadPropertyString("Password")));
+
+        $api->bufferedUpdateMaxLeistungWW($maxLeistung);
+        $api->sendBuffer(10);
+        $api->clearBuffer();
+    }
+
     public function RetrieveWCMStatus(bool $sendBuffer = true) {
         $api = new Weishaupt(new WeishauptOptions($this->ReadPropertyString("URL"), $this->ReadPropertyString("Username"), $this->ReadPropertyString("Password")));
 
@@ -88,6 +114,8 @@ class WCMConnector extends IPSModule {
         }
         
         $bufferPositions["KesselLaststellung"] = $api->bufferedRequestLaststellung();
+        $bufferPositions["KesselMaxLeistungHeizung"] = $api->bufferedRequestMaxLeistungHeizung();
+        $bufferPositions["KesselMaxLeistungWW"] = $api->bufferedRequestMaxLeistungWW();
         $bufferPositions["KesselAussentemperatur"] = $api->bufferedRequestAussentemperatur();
         $bufferPositions["KesselGedaempfteAussentemperatur"] = $api->bufferedRequestGedaempfteAussentemperatur();
         $bufferPositions["KesselWaermeanforderung"] = $api->bufferedRequestWaermeanforderung();

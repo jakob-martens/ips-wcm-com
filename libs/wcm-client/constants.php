@@ -43,6 +43,10 @@ const Info = array(
     /** As it is, it is percent */
     "Laststellung" => 138,
     /** Divide by 10 */
+    "MaxLeistungHeizung" => 319,
+    /** Divide by 10 */
+    "MaxLeistungWW" => 345,
+    /** Divide by 10 */
     "Abgastemperatur" => 325,
     /** Take as it is */
     "Betriebsphase" => 373,
@@ -70,6 +74,8 @@ const Unit = array(
     "B11PufferUnten" => '°C',
     "Durchfluss" => 'l/min',
     "Laststellung" => '%',
+    "MaxLeistungHeizung" => '%',
+    "MaxLeistungWW" => '%',
     "Abgastemperatur" => '°C',
     "LeistungSolar" => 'W',
     "GedaempfteAussentemperatur" => '°C',

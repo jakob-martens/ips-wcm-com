@@ -108,6 +108,24 @@ class Weishaupt {
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
+    public function bufferedRequestMaxLeistungHeizung(): int {
+        $telegram = [10, 0, Operation["Lesen"], Info["MaxLeistungHeizung"], 0, 0, 0, 0];
+
+        return $this->addBuffer($telegram);
+    }
+    
+    /**
+     * Adds a new telegram to the buffer and returns the buffer position
+     */
+    public function bufferedRequestMaxLeistungWW(): int {
+        $telegram = [10, 0, Operation["Lesen"], Info["MaxLeistungWW"], 0, 0, 0, 0];
+
+        return $this->addBuffer($telegram);
+    }
+    
+    /**
+     * Adds a new telegram to the buffer and returns the buffer position
+     */
     public function bufferedRequestFehlercode(): int {
         if(count($this->telegramRequestBuffer) > 0) {
             throw new Exception("'Fehlercode' needs to be the first telegram.");
@@ -181,11 +199,29 @@ class Weishaupt {
         return $this->addBuffer($telegram);
     }
     
-     /**
-     * Adds a new telegram to the buffer and returns the buffer position
-     */
-   public function bufferedUpdateBetriebsartHK(int $heizkreis, int $betriebsart): int {
+    /**
+    * Adds a new telegram to the buffer and returns the buffer position
+    */
+    public function bufferedUpdateBetriebsartHK(int $heizkreis, int $betriebsart): int {
         $telegram = [6, ($heizkreis - 1), Operation["Schreiben"], Info["BetriebsartHK"], 0, 0, $betriebsart, 0];
+
+        return $this->addBuffer($telegram);
+    }
+    
+    /**
+    * Adds a new telegram to the buffer and returns the buffer position
+    */
+    public function bufferedUpdateMaxLeistungHeizung(int $maxLeistung): int {
+        $telegram = [10, 0, Operation["Schreiben"], Info["MaxLeistungHeizung"], 0, 0, $this->_calcLowByte($maxLeistung * 10), $this->_calcHighByte($maxLeistung * 10)];
+
+        return $this->addBuffer($telegram);
+    }
+    
+    /**
+    * Adds a new telegram to the buffer and returns the buffer position
+    */
+    public function bufferedUpdateMaxLeistungWW(int $maxLeistung): int {
+        $telegram = [10, 0, Operation["Schreiben"], Info["MaxLeistungWW"], 0, 0, $this->_calcLowByte($maxLeistung * 10), $this->_calcHighByte($maxLeistung * 10)];
 
         return $this->addBuffer($telegram);
     }
@@ -371,6 +407,24 @@ class Weishaupt {
             $usValue = -32768 + ($highByte - 128) * 256 + $lowByte;
         }
         return $usValue;
+    }
+    
+    /**
+     * Calculate the low byte of a value
+     *
+     * @param value
+     */
+    private function _calcLowByte(int $value): int {
+        return $value & 0xff;
+    }
+    
+    /**
+     * Calculate the high byte of a value
+     *
+     * @param value
+     */
+    private function _calcHighByte(int $value): int {
+        return ($value >> 8) & 0xff;
     }
     
     // Method: POST, PUT, GET etc
