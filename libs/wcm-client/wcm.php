@@ -212,6 +212,10 @@ class Weishaupt {
     * Adds a new telegram to the buffer and returns the buffer position
     */
     public function bufferedUpdateMaxLeistungHeizung(int $maxLeistung): int {
+        if($maxLeistung > 100 || $maxLeistung < 36) {
+            throw new Exception("Value outside of valid range of 36% - 100%");
+        }
+        
         $telegram = [10, 0, Operation["Schreiben"], Info["MaxLeistungHeizung"], 0, 0, $this->_calcLowByte($maxLeistung * 10), $this->_calcHighByte($maxLeistung * 10)];
 
         return $this->addBuffer($telegram);
@@ -221,6 +225,10 @@ class Weishaupt {
     * Adds a new telegram to the buffer and returns the buffer position
     */
     public function bufferedUpdateMaxLeistungWW(int $maxLeistung): int {
+        if($maxLeistung > 100 || $maxLeistung < 36) {
+            throw new Exception("Value outside of valid range of 36% - 100%");
+        }
+        
         $telegram = [10, 0, Operation["Schreiben"], Info["MaxLeistungWW"], 0, 0, $this->_calcLowByte($maxLeistung * 10), $this->_calcHighByte($maxLeistung * 10)];
 
         return $this->addBuffer($telegram);

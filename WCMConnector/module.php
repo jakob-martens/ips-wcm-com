@@ -20,6 +20,7 @@ class WCMConnector extends IPSModule {
         $this->RegisterTimer("Update", 0, "WCM_RetrieveWCMStatus(".$this->InstanceID.", true);");
         
         $this->CreateVarProfileWCMBetriebsartHK();
+        $this->CreateVarProfileWCMMaxLeistung();
     }
     
     public function ApplyChanges() {
@@ -34,9 +35,9 @@ class WCMConnector extends IPSModule {
         $this->RegisterVariableFloat("KesselAussentemperatur", "Kessel Außentemperatur", "~Temperature");
         $this->RegisterVariableFloat("KesselGedaempfteAussentemperatur", "Kessel Gedämpfte Außentemperatur", "~Temperature");
         $this->RegisterVariableInteger("KesselLaststellung", "Kessel Laststellung", "~Intensity.100");
-        $this->RegisterVariableInteger("KesselMaxLeistungHeizung", "Kessel Max. Leistung Heizung", "~Intensity.100");
+        $this->RegisterVariableInteger("KesselMaxLeistungHeizung", "Kessel Max. Leistung Heizung", "WCM.MaxLeistung");
         $this->EnableAction("KesselMaxLeistungHeizung");
-        $this->RegisterVariableInteger("KesselMaxLeistungWW", "Kessel Max. Leistung WW", "~Intensity.100");
+        $this->RegisterVariableInteger("KesselMaxLeistungWW", "Kessel Max. Leistung WW", "WCM.MaxLeistung");
         $this->EnableAction("KesselMaxLeistungWW");
         $this->RegisterVariableFloat("KesselWaermeanforderung", "Kessel Wärmeanforderung", "~Temperature");
         $this->RegisterVariableFloat("KesselVorlauftemperatur", "Kessel Vorlauftemperatur", "~Temperature");
@@ -155,6 +156,13 @@ class WCMConnector extends IPSModule {
             foreach(BetriebsartHK as $name => $value) {
                 IPS_SetVariableProfileAssociation("WCM.BetriebsartHK", $value, $name, "", -1);
             }
+		 }
+	}
+    
+    private function CreateVarProfileWCMMaxLeistung() {
+		if (!IPS_VariableProfileExists("WCM.MaxLeistung")) {
+			IPS_CreateVariableProfile("WCM.MaxLeistung", 1);
+			IPS_SetVariableProfileValues("WCM.MaxLeistung", 36, 100, 1);
 		 }
 	}
 }
