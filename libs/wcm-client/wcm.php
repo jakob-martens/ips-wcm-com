@@ -314,7 +314,7 @@ class Weishaupt {
 
         $decoded = json_decode($body, $associative = false, $flags = JSON_THROW_ON_ERROR);
         
-        if(!isset($decoded) || !isset($decoded->telegramm)) {
+        if(!isset($decoded) || !isset($decoded->telegramm) || empty($decoded->telegramm)) {
             throw new Exception("Invalid WCM response. Response is empty.");
         }
         
