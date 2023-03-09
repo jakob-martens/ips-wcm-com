@@ -6,9 +6,6 @@ class WCMConnector extends IPSModule {
 
     public function Create() {
         parent::Create();
-        
-        $this->RegisterVariableBoolean("ParameterUpdate", "Parameter Update", "~Switch", 100);
-        $this->EnableAction("ParameterUpdate");
 
         $this->RegisterPropertyString("URL", "");
         $this->RegisterPropertyString("Username", "");
@@ -26,6 +23,9 @@ class WCMConnector extends IPSModule {
     public function ApplyChanges() {
         parent::ApplyChanges();
                 
+        $this->RegisterVariableBoolean("ParameterUpdate", "Parameter Update", "~Switch", 100);
+        $this->EnableAction("ParameterUpdate");
+
         for($i = $this->ReadPropertyInteger("FirstHK"); $i <= $this->ReadPropertyInteger("LastHK"); $i++) {
             $startPosition = $i * 10;
             
