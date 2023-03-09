@@ -340,8 +340,8 @@ class Weishaupt {
     * Adds a new telegram to the buffer and returns the buffer position
     */
     public function bufferedUpdateSoWiUmschalttemperaturHK(int $heizkreis, int $temperatur): int {
-        if($maxLeistung > 100 || $maxLeistung < 36) {
-            throw new Exception("Value outside of valid range of 36% - 100%");
+        if($temperatur > 30 || $temperatur < -10) {
+            throw new Exception("Value outside of valid range of -10 - 30");
         }
         
         $telegram = [6, ($heizkreis - 1), Operation["Schreiben"], Info["SoWiUmschalttemperaturHK"], 0, 0, $this->_calcLowByte($temperatur * 10), $this->_calcHighByte($temperatur * 10)];
