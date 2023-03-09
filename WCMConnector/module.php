@@ -70,51 +70,54 @@ class WCMConnector extends IPSModule {
     }
     
     public function RequestAction($Ident, $Value) {
-
-        switch($Ident) {
-            case "ParameterUpdate":
-                SetValue($this->GetIDForIdent($Ident), $Value);
-                
-                if($Value === True) {
-                    $this->RetrieveWCMStatus(true);
-                    $this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval") * 1000);
-                } else {
-                    $this->SetTimerInterval("Update", 0);
-                    $this->RetrieveWCMStatus(false);
-                }
-                break;
-            case "KesselMaxLeistungHeizung":
-                $this->UpdateWCMMaxLeistungHeizung($Value);
-                SetValue($this->GetIDForIdent($Ident), $Value);
-                break;
-            case "KesselMaxLeistungWW":
-                $this->UpdateWCMMaxLeistungWW($Value);
-                SetValue($this->GetIDForIdent($Ident), $Value);
-                break;
-            default:
-                $api = new Weishaupt(new WeishauptOptions($this->ReadPropertyString("URL"), $this->ReadPropertyString("Username"), $this->ReadPropertyString("Password")));
-                
-                if(strpos($Ident, self::BETRIEBSART_HK_PREFIX) !== false) {
-                    $api->bufferedUpdateBetriebsartHK(intval(substr($Ident, strlen(self::BETRIEBSART_HK_PREFIX))), $Value);
+        if(IPS_SemaphoreEnter("WCM_Communication", 10000)) {
+            switch($Ident) {
+                case "ParameterUpdate":
                     SetValue($this->GetIDForIdent($Ident), $Value);
-                } elseif(strpos($Ident, "NormalRaumtemperaturHK") !== false) {
-                    $api->bufferedUpdateNormalRaumtemperaturHK(intval(substr($Ident, strlen("NormalRaumtemperaturHK"))), $Value);
+                    
+                    if($Value === True) {
+                        $this->RetrieveWCMStatus(true);
+                        $this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval") * 1000);
+                    } else {
+                        $this->SetTimerInterval("Update", 0);
+                        $this->RetrieveWCMStatus(false);
+                    }
+                    break;
+                case "KesselMaxLeistungHeizung":
+                    $this->UpdateWCMMaxLeistungHeizung($Value);
                     SetValue($this->GetIDForIdent($Ident), $Value);
-                }  elseif(strpos($Ident, "RaumfrosttemperaturHK") !== false) {
-                    $api->bufferedUpdateRaumfrosttemperaturHK(intval(substr($Ident, strlen("RaumfrosttemperaturHK"))), $Value);
+                    break;
+                case "KesselMaxLeistungWW":
+                    $this->UpdateWCMMaxLeistungWW($Value);
                     SetValue($this->GetIDForIdent($Ident), $Value);
-                }  elseif(strpos($Ident, "SoWiUmschalttemperaturHK") !== false) {
-                    $api->bufferedUpdateNormalRaumtemperaturHK(intval(substr($Ident, strlen("SoWiUmschalttemperaturHK"))), $Value);
-                    SetValue($this->GetIDForIdent($Ident), $Value);
-                }  elseif(strpos($Ident, "SteilheitHK") !== false) {
-                    $api->bufferedUpdateNormalRaumtemperaturHK(intval(substr($Ident, strlen("SteilheitHK"))), $Value);
-                    SetValue($this->GetIDForIdent($Ident), $Value);
-                } else {
-                    throw new Exception("Invalid Ident");
-                }
-                
-                $api->sendBuffer(10);
-                $api->clearBuffer();
+                    break;
+                default:
+                    $api = new Weishaupt(new WeishauptOptions($this->ReadPropertyString("URL"), $this->ReadPropertyString("Username"), $this->ReadPropertyString("Password")));
+                    
+                    if(strpos($Ident, self::BETRIEBSART_HK_PREFIX) !== false) {
+                        $api->bufferedUpdateBetriebsartHK(intval(substr($Ident, strlen(self::BETRIEBSART_HK_PREFIX))), $Value);
+                        SetValue($this->GetIDForIdent($Ident), $Value);
+                    } elseif(strpos($Ident, "NormalRaumtemperaturHK") !== false) {
+                        $api->bufferedUpdateNormalRaumtemperaturHK(intval(substr($Ident, strlen("NormalRaumtemperaturHK"))), $Value);
+                        SetValue($this->GetIDForIdent($Ident), $Value);
+                    }  elseif(strpos($Ident, "RaumfrosttemperaturHK") !== false) {
+                        $api->bufferedUpdateRaumfrosttemperaturHK(intval(substr($Ident, strlen("RaumfrosttemperaturHK"))), $Value);
+                        SetValue($this->GetIDForIdent($Ident), $Value);
+                    }  elseif(strpos($Ident, "SoWiUmschalttemperaturHK") !== false) {
+                        $api->bufferedUpdateNormalRaumtemperaturHK(intval(substr($Ident, strlen("SoWiUmschalttemperaturHK"))), $Value);
+                        SetValue($this->GetIDForIdent($Ident), $Value);
+                    }  elseif(strpos($Ident, "SteilheitHK") !== false) {
+                        $api->bufferedUpdateNormalRaumtemperaturHK(intval(substr($Ident, strlen("SteilheitHK"))), $Value);
+                        SetValue($this->GetIDForIdent($Ident), $Value);
+                    } else {
+                        throw new Exception("Invalid Ident");
+                    }
+                    
+                    $api->sendBuffer(10);
+                    $api->clearBuffer();
+            }
+        } else {
+            echo "Durch parallele Anfrage blockiert.";
         }
         
     }
