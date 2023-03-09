@@ -27,8 +27,13 @@ class WCMConnector extends IPSModule {
         parent::ApplyChanges();
                 
         for($i = $this->ReadPropertyInteger("FirstHK"); $i <= $this->ReadPropertyInteger("LastHK"); $i++) {
+            $catID = IPS_CreateCategory();
+            IPS_SetName($catID, "Heizkreis ".$i);
+            IPS_SetParent($catID, $this->InstanceID);
+            
             $this->RegisterVariableInteger(self::BETRIEBSART_HK_PREFIX.$i, "Betriebsart Heizkreis ".$i, "WCM.BetriebsartHK");
             $this->EnableAction(self::BETRIEBSART_HK_PREFIX.$i);
+            IPS_SetParent($this->GetIDForIdent(self::BETRIEBSART_HK_PREFIX.$i), $catID);
         }
         
         $this->RegisterVariableInteger("KesselFehlercode", "Kessel Fehlercode", "", 1);

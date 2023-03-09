@@ -26,6 +26,8 @@ const Info = array(
     "Fehlercode" => 1,
     /** Divide by 10 */
     "Waermeanforderung" => 2,
+    "SollTempHK" => 4,
+    "NormalRaumtemperaturHK" => 5,
     /** Divide by 10 */
     "Aussentemperatur" => 12,
     /** We need to calculate: 4 is 26 and 14 is 27, 24 is 28 */
@@ -33,6 +35,7 @@ const Info = array(
     /** Divide by 10 */
     "Warmwassertemperatur" => 14,
     /** Divide by 10 */
+    "VorlauftemperaturHK" => 15,
     "Ruecklauftemperatur" => 22,
     /** Divide by 10 */
     "B10PufferOben" => 118,
@@ -42,7 +45,10 @@ const Info = array(
     "Durchfluss" => 130,
     /** As it is, it is percent */
     "Laststellung" => 138,
+    "SteilheitHK" => 270,
+    "BetriebsartHK" => 274,
     /** Divide by 10 */
+    "SoWiUmschalttemperatur" => 278,
     "MaxLeistungHeizung" => 319,
     /** Divide by 10 */
     "MaxLeistungWW" => 345,
@@ -54,6 +60,7 @@ const Info = array(
     "LeistungSolar" => 475,
     /** Divide by 10 */
     "GedaempfteAussentemperatur" => 2572,
+    "RaumfrosttemperaturHK" => 2580,
     /** Divide by 10 */
     "T1Kollektor" => 2601,
     /** Divide by 10 */
@@ -62,7 +69,6 @@ const Info = array(
     "VorlauftemperaturEstb" => 3101,
     "StartsiteFooter" => 5066,
     "Password" => 5056,
-    "BetriebsartHK" => 274,
 );
 
 const Unit = array(
