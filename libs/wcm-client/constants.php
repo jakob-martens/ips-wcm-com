@@ -48,7 +48,7 @@ const Info = array(
     "SteilheitHK" => 270,
     "BetriebsartHK" => 274,
     /** Divide by 10 */
-    "SoWiUmschalttemperatur" => 278,
+    "SoWiUmschalttemperaturHK" => 278,
     "MaxLeistungHeizung" => 319,
     /** Divide by 10 */
     "MaxLeistungWW" => 345,

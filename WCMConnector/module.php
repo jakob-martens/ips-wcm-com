@@ -7,7 +7,7 @@ class WCMConnector extends IPSModule {
     public function Create() {
         parent::Create();
         
-        $this->RegisterVariableBoolean("ParameterUpdate", "Parameter Update", "~Switch");
+        $this->RegisterVariableBoolean("ParameterUpdate", "Parameter Update", "~Switch", 100);
         $this->EnableAction("ParameterUpdate");
 
         $this->RegisterPropertyString("URL", "");
@@ -27,24 +27,36 @@ class WCMConnector extends IPSModule {
         parent::ApplyChanges();
                 
         for($i = $this->ReadPropertyInteger("FirstHK"); $i <= $this->ReadPropertyInteger("LastHK"); $i++) {
-            $this->RegisterVariableInteger(self::BETRIEBSART_HK_PREFIX.$i, "Betriebsart Heizkreis ".$i, "WCM.BetriebsartHK");
+            $startPosition = $i * 10;
+            
+            $this->RegisterVariableInteger(self::BETRIEBSART_HK_PREFIX.$i, "HK ".$i." Betriebsart", "WCM.BetriebsartHK", $startPosition + 1);
             $this->EnableAction(self::BETRIEBSART_HK_PREFIX.$i);
+            
+            $this->RegisterVariableFloat("VorlauftemperaturHK".$i, "HK ".$i." Vorlauftemperatur", "~Temperature", $startPosition + 2);
+            $this->RegisterVariableFloat("SollTempHK".$i, "HK ".$i." Soll Temperatur", "~Temperature", $startPosition + 3);
+            $this->RegisterVariableFloat("WaermeanforderungHK".$i, "HK ".$i." Waermeanforderung", "~Temperature", $startPosition + 4);
+            $this->RegisterVariableFloat("NormalRaumtemperaturHK".$i, "HK ".$i." Normal Raumtemperatur", "~Temperature", $startPosition + 5);
+            $this->RegisterVariableFloat("RaumfrosttemperaturHK".$i, "HK ".$i." Raumfrosttemperatur", "~Temperature", $startPosition + 6);
+            $this->RegisterVariableFloat("SoWiUmschalttemperaturHK".$i, "HK ".$i." So/Wi Umschalttemperatur", "~Temperature", $startPosition + 7);
+            $this->RegisterVariableFloat("SteilheitHK".$i, "HK ".$i." Steilheit", "", $startPosition + 8);
         }
         
-        $this->RegisterVariableInteger("KesselFehlercode", "Kessel Fehlercode", "", 1);
-        $this->RegisterVariableFloat("KesselAussentemperatur", "Kessel Außentemperatur", "~Temperature", 2);
-        $this->RegisterVariableFloat("KesselGedaempfteAussentemperatur", "Kessel Gedämpfte Außentemperatur", "~Temperature", 3);
-        $this->RegisterVariableInteger("KesselLaststellung", "Kessel Laststellung", "~Intensity.100", 4);
-        $this->RegisterVariableInteger("KesselMaxLeistungHeizung", "Kessel Max. Leistung Heizung", "WCM.MaxLeistung", 5);
+        $startPosition = $this->ReadPropertyInteger("LastHK") * 10 + 10;
+        
+        $this->RegisterVariableInteger("KesselFehlercode", "Kessel Fehlercode", "", $startPosition + 1);
+        $this->RegisterVariableFloat("KesselAussentemperatur", "Kessel Außentemperatur", "~Temperature", $startPosition + 2);
+        $this->RegisterVariableFloat("KesselGedaempfteAussentemperatur", "Kessel Gedämpfte Außentemperatur", "~Temperature", $startPosition + 3);
+        $this->RegisterVariableInteger("KesselLaststellung", "Kessel Laststellung", "~Intensity.100", $startPosition + 4);
+        $this->RegisterVariableInteger("KesselMaxLeistungHeizung", "Kessel Max. Leistung Heizung", "WCM.MaxLeistung", $startPosition + 5);
         $this->EnableAction("KesselMaxLeistungHeizung");
-        $this->RegisterVariableInteger("KesselMaxLeistungWW", "Kessel Max. Leistung WW", "WCM.MaxLeistung", 6);
+        $this->RegisterVariableInteger("KesselMaxLeistungWW", "Kessel Max. Leistung WW", "WCM.MaxLeistung", $startPosition + 6);
         $this->EnableAction("KesselMaxLeistungWW");
-        $this->RegisterVariableFloat("KesselWaermeanforderung", "Kessel Wärmeanforderung", "~Temperature", 7);
-        $this->RegisterVariableFloat("KesselVorlauftemperatur", "Kessel Vorlauftemperatur", "~Temperature", 8);
-        $this->RegisterVariableFloat("KesselVorlauftemperaturEstb", "Kessel Vorlauftemperatur eSTB", "~Temperature", 9);
-        $this->RegisterVariableFloat("KesselRuecklauftemperatur", "Kessel Rücklauftemperatur", "~Temperature", 10);
-        $this->RegisterVariableFloat("KesselWarmwassertemperatur", "Kessel Warmwassertemperatur", "~Temperature", 11);
-        $this->RegisterVariableFloat("KesselAbgastemperatur", "Kessel Abgastemperatur", "~Temperature", 12);
+        $this->RegisterVariableFloat("KesselWaermeanforderung", "Kessel Wärmeanforderung", "~Temperature", $startPosition + 7);
+        $this->RegisterVariableFloat("KesselVorlauftemperatur", "Kessel Vorlauftemperatur", "~Temperature", $startPosition + 8);
+        $this->RegisterVariableFloat("KesselVorlauftemperaturEstb", "Kessel Vorlauftemperatur eSTB", "~Temperature", $startPosition + 9);
+        $this->RegisterVariableFloat("KesselRuecklauftemperatur", "Kessel Rücklauftemperatur", "~Temperature", $startPosition + 10);
+        $this->RegisterVariableFloat("KesselWarmwassertemperatur", "Kessel Warmwassertemperatur", "~Temperature", $startPosition + 11);
+        $this->RegisterVariableFloat("KesselAbgastemperatur", "Kessel Abgastemperatur", "~Temperature", $startPosition + 12);
         
         $this->RequestAction("ParameterUpdate", $this->GetValue("ParameterUpdate"));
     }
@@ -114,6 +126,14 @@ class WCMConnector extends IPSModule {
 
         for($i = $this->ReadPropertyInteger("FirstHK"); $i <= $this->ReadPropertyInteger("LastHK"); $i++) {
             $bufferPositions[self::BETRIEBSART_HK_PREFIX.$i] = $api->bufferedRequestBetriebsartHK($i);
+
+            $bufferPositions["VorlauftemperaturHK".$i] = $api->bufferedRequestVorlauftemperaturHK($i);
+            $bufferPositions["SollTempHK".$i] = $api->bufferedRequestSollTempHK($i);
+            $bufferPositions["WaermeanforderungHK".$i] = $api->bufferedRequestWaermeanforderungHK($i);
+            $bufferPositions["NormalRaumtemperaturHK".$i] = $api->bufferedRequestNormalRaumtemperaturHK($i);
+            $bufferPositions["RaumfrosttemperaturHK".$i] = $api->bufferedRequestRaumfrosttemperaturHK($i);
+            $bufferPositions["SoWiUmschalttemperaturHK".$i] = $api->bufferedRequestSoWiUmschalttemperaturHK($i);
+            $bufferPositions["SteilheitHK".$i] = $api->bufferedRequestSteilheitHK($i);
         }
         
         $bufferPositions["KesselLaststellung"] = $api->bufferedRequestLaststellung();
