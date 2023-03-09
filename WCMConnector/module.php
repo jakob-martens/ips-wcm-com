@@ -36,13 +36,13 @@ class WCMConnector extends IPSModule {
             $this->RegisterVariableFloat("SollTempHK".$i, "HK ".$i." Soll Temperatur", "~Temperature", $startPosition + 3);
             $this->RegisterVariableFloat("WaermeanforderungHK".$i, "HK ".$i." Waermeanforderung", "~Temperature", $startPosition + 4);
             
-            $this->RegisterVariableFloat("NormalRaumtemperaturHK".$i, "HK ".$i." Normal Raumtemperatur", "~Temperature", $startPosition + 5);
+            $this->RegisterVariableFloat("NormalRaumtemperaturHK".$i, "HK ".$i." Normal Raumtemperatur", "~Temperature.HM", $startPosition + 5);
             $this->EnableAction("NormalRaumtemperaturHK".$i);
             
-            $this->RegisterVariableFloat("RaumfrosttemperaturHK".$i, "HK ".$i." Raumfrosttemperatur", "~Temperature", $startPosition + 6);
+            $this->RegisterVariableFloat("RaumfrosttemperaturHK".$i, "HK ".$i." Raumfrosttemperatur", "~Temperature.HM", $startPosition + 6);
             $this->EnableAction("RaumfrosttemperaturHK".$i);
             
-            $this->RegisterVariableFloat("SoWiUmschalttemperaturHK".$i, "HK ".$i." So/Wi Umschalttemperatur", "~Temperature", $startPosition + 7);
+            $this->RegisterVariableFloat("SoWiUmschalttemperaturHK".$i, "HK ".$i." So/Wi Umschalttemperatur", "~Temperature.HM", $startPosition + 7);
             $this->EnableAction("SoWiUmschalttemperaturHK".$i);
             
             $this->RegisterVariableFloat("SteilheitHK".$i, "HK ".$i." Steilheit", "", $startPosition + 8);

@@ -301,8 +301,8 @@ class Weishaupt {
     * Adds a new telegram to the buffer and returns the buffer position
     */
     public function bufferedUpdateNormalRaumtemperaturHK(int $heizkreis, int $normalRaumtemperatur): int {
-        if($maxLeistung > 100 || $maxLeistung < 36) {
-            throw new Exception("Value outside of valid range of 36% - 100%");
+        if($normalRaumtemperatur > 30 || $normalRaumtemperatur < 0) {
+            throw new Exception("Value outside of valid range of 0 - 30");
         }
         
         $telegram = [6, ($heizkreis - 1), Operation["Schreiben"], Info["NormalRaumtemperaturHK"], 0, 0, $this->_calcLowByte($normalRaumtemperatur * 10), $this->_calcHighByte($normalRaumtemperatur * 10)];
@@ -314,8 +314,8 @@ class Weishaupt {
     * Adds a new telegram to the buffer and returns the buffer position
     */
     public function bufferedUpdateSteilheitHK(int $heizkreis, int $steilheit): int {
-        if($maxLeistung > 100 || $maxLeistung < 36) {
-            throw new Exception("Value outside of valid range of 36% - 100%");
+        if($steilheit > 40 || $steilheit < 2.5) {
+            throw new Exception("Value outside of valid range of 2.5 - 40");
         }
         
         $telegram = [6, ($heizkreis - 1), Operation["Schreiben"], Info["SteilheitHK"], 0, 0, $this->_calcLowByte($steilheit * 10), $this->_calcHighByte($steilheit * 10)];
@@ -327,8 +327,8 @@ class Weishaupt {
     * Adds a new telegram to the buffer and returns the buffer position
     */
     public function bufferedUpdateRaumfrosttemperaturHK(int $heizkreis, int $raumfrosttemperatur): int {
-        if($maxLeistung > 100 || $maxLeistung < 36) {
-            throw new Exception("Value outside of valid range of 36% - 100%");
+        if($raumfrosttemperatur > 30 || $raumfrosttemperatur < -10) {
+            throw new Exception("Value outside of valid range of -10 - 30");
         }
         
         $telegram = [6, ($heizkreis - 1), Operation["Schreiben"], Info["RaumfrosttemperaturHK"], 0, 0, $this->_calcLowByte($raumfrosttemperatur * 10), $this->_calcHighByte($raumfrosttemperatur * 10)];
