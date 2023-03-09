@@ -139,7 +139,7 @@ class Weishaupt {
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
-    public function bufferedRequestAbgastemperatur(): float {
+    public function bufferedRequestAbgastemperatur(): int {
         $telegram = [10, 0, Operation["Lesen"], Info["Abgastemperatur"], 0, 0, 0, 0];
 
         return $this->addBuffer($telegram);
@@ -148,7 +148,7 @@ class Weishaupt {
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
-    public function bufferedRequestWaermeanforderung(): float {
+    public function bufferedRequestWaermeanforderung(): int {
         $telegram = [10, 0, Operation["Lesen"], Info["Waermeanforderung"], 0, 0, 0, 0];
 
         return $this->addBuffer($telegram);
@@ -157,7 +157,7 @@ class Weishaupt {
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
-    public function bufferedRequestAussentemperatur(): float {
+    public function bufferedRequestAussentemperatur(): int {
         $telegram = [10, 0, Operation["Lesen"], Info["Aussentemperatur"], 0, 0, 0, 0];
 
         return $this->addBuffer($telegram);
@@ -166,7 +166,7 @@ class Weishaupt {
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
-    public function bufferedRequestGedaempfteAussentemperatur(): float {
+    public function bufferedRequestGedaempfteAussentemperatur(): int {
         $telegram = [10, 0, Operation["Lesen"], Info["GedaempfteAussentemperatur"], 0, 0, 0, 0];
 
         return $this->addBuffer($telegram);
@@ -175,7 +175,7 @@ class Weishaupt {
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
-    public function bufferedRequestVorlauftemperatur(): float {
+    public function bufferedRequestVorlauftemperatur(): int {
         $telegram = [10, 0, Operation["Lesen"], Info["Vorlauftemperatur"], 0, 0, 0, 0];
 
         return $this->addBuffer($telegram);
@@ -184,7 +184,7 @@ class Weishaupt {
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
-    public function bufferedRequestVorlauftemperaturEstb(): float {
+    public function bufferedRequestVorlauftemperaturEstb(): int {
         $telegram = [10, 0, Operation["Lesen"], Info["VorlauftemperaturEstb"], 0, 0, 0, 0];
 
         return $this->addBuffer($telegram);
@@ -202,7 +202,7 @@ class Weishaupt {
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
-    public function bufferedRequestVorlauftemperaturHK(int $heizkreis): float {
+    public function bufferedRequestVorlauftemperaturHK(int $heizkreis): int {
         $telegram = [12, ($heizkreis - 1), Operation["Lesen"], Info["VorlauftemperaturHK"], 0, 0, 0, 0];
 
         return $this->addBuffer($telegram);
@@ -211,7 +211,7 @@ class Weishaupt {
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
-    public function bufferedRequestSollTempHK(int $heizkreis): float {
+    public function bufferedRequestSollTempHK(int $heizkreis): int {
         $telegram = [6, ($heizkreis - 1), Operation["Lesen"], Info["SollTempHK"], 0, 0, 0, 0];
 
         return $this->addBuffer($telegram);
@@ -220,7 +220,7 @@ class Weishaupt {
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
-    public function bufferedRequestWaermeanforderungHK(int $heizkreis): float {
+    public function bufferedRequestWaermeanforderungHK(int $heizkreis): int {
         $telegram = [6, ($heizkreis - 1), Operation["Lesen"], Info["Waermeanforderung"], 0, 0, 0, 0];
 
         return $this->addBuffer($telegram);
@@ -229,7 +229,7 @@ class Weishaupt {
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
-    public function bufferedRequestNormalRaumtemperaturHK(int $heizkreis): float {
+    public function bufferedRequestNormalRaumtemperaturHK(int $heizkreis): int {
         $telegram = [6, ($heizkreis - 1), Operation["Lesen"], Info["NormalRaumtemperaturHK"], 0, 0, 0, 0];
 
         return $this->addBuffer($telegram);
@@ -238,7 +238,7 @@ class Weishaupt {
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
-    public function bufferedRequestSteilheitHK(int $heizkreis): float {
+    public function bufferedRequestSteilheitHK(int $heizkreis): int {
         $telegram = [6, ($heizkreis - 1), Operation["Lesen"], Info["SteilheitHK"], 0, 0, 0, 0];
 
         return $this->addBuffer($telegram);
@@ -247,7 +247,7 @@ class Weishaupt {
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
-    public function bufferedRequestRaumfrosttemperaturHK(int $heizkreis): float {
+    public function bufferedRequestRaumfrosttemperaturHK(int $heizkreis): int {
         $telegram = [6, ($heizkreis - 1), Operation["Lesen"], Info["RaumfrosttemperaturHK"], 0, 0, 0, 0];
 
         return $this->addBuffer($telegram);
@@ -256,7 +256,7 @@ class Weishaupt {
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
-    public function bufferedRequestSoWiUmschalttemperaturHK(int $heizkreis): float {
+    public function bufferedRequestSoWiUmschalttemperaturHK(int $heizkreis): int {
         $telegram = [6, ($heizkreis - 1), Operation["Lesen"], Info["SoWiUmschalttemperaturHK"], 0, 0, 0, 0];
 
         return $this->addBuffer($telegram);
