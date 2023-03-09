@@ -300,7 +300,7 @@ class Weishaupt {
     /**
     * Adds a new telegram to the buffer and returns the buffer position
     */
-    public function bufferedUpdateNormalRaumtemperaturHK(int $heizkreis, int $normalRaumtemperatur): int {
+    public function bufferedUpdateNormalRaumtemperaturHK(int $heizkreis, float $normalRaumtemperatur): int {
         if($normalRaumtemperatur > 30 || $normalRaumtemperatur < 0) {
             throw new Exception("Value outside of valid range of 0 - 30");
         }
@@ -313,7 +313,7 @@ class Weishaupt {
     /**
     * Adds a new telegram to the buffer and returns the buffer position
     */
-    public function bufferedUpdateSteilheitHK(int $heizkreis, int $steilheit): int {
+    public function bufferedUpdateSteilheitHK(int $heizkreis, float $steilheit): int {
         if($steilheit > 40 || $steilheit < 2.5) {
             throw new Exception("Value outside of valid range of 2.5 - 40");
         }
@@ -326,7 +326,7 @@ class Weishaupt {
     /**
     * Adds a new telegram to the buffer and returns the buffer position
     */
-    public function bufferedUpdateRaumfrosttemperaturHK(int $heizkreis, int $raumfrosttemperatur): int {
+    public function bufferedUpdateRaumfrosttemperaturHK(int $heizkreis, float $raumfrosttemperatur): int {
         if($raumfrosttemperatur > 30 || $raumfrosttemperatur < -10) {
             throw new Exception("Value outside of valid range of -10 - 30");
         }
@@ -339,7 +339,7 @@ class Weishaupt {
     /**
     * Adds a new telegram to the buffer and returns the buffer position
     */
-    public function bufferedUpdateSoWiUmschalttemperaturHK(int $heizkreis, int $temperatur): int {
+    public function bufferedUpdateSoWiUmschalttemperaturHK(int $heizkreis, float $temperatur): int {
         if($temperatur > 30 || $temperatur < -10) {
             throw new Exception("Value outside of valid range of -10 - 30");
         }
