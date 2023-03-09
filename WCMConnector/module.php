@@ -35,10 +35,18 @@ class WCMConnector extends IPSModule {
             $this->RegisterVariableFloat("VorlauftemperaturHK".$i, "HK ".$i." Vorlauftemperatur", "~Temperature", $startPosition + 2);
             $this->RegisterVariableFloat("SollTempHK".$i, "HK ".$i." Soll Temperatur", "~Temperature", $startPosition + 3);
             $this->RegisterVariableFloat("WaermeanforderungHK".$i, "HK ".$i." Waermeanforderung", "~Temperature", $startPosition + 4);
+            
             $this->RegisterVariableFloat("NormalRaumtemperaturHK".$i, "HK ".$i." Normal Raumtemperatur", "~Temperature", $startPosition + 5);
+            $this->EnableAction("NormalRaumtemperaturHK".$i);
+            
             $this->RegisterVariableFloat("RaumfrosttemperaturHK".$i, "HK ".$i." Raumfrosttemperatur", "~Temperature", $startPosition + 6);
+            $this->EnableAction("RaumfrosttemperaturHK".$i);
+            
             $this->RegisterVariableFloat("SoWiUmschalttemperaturHK".$i, "HK ".$i." So/Wi Umschalttemperatur", "~Temperature", $startPosition + 7);
+            $this->EnableAction("SoWiUmschalttemperaturHK".$i);
+            
             $this->RegisterVariableFloat("SteilheitHK".$i, "HK ".$i." Steilheit", "", $startPosition + 8);
+            $this->EnableAction("SteilheitHK".$i);
         }
         
         $startPosition = $this->ReadPropertyInteger("LastHK") * 10 + 10;
@@ -84,21 +92,31 @@ class WCMConnector extends IPSModule {
                 SetValue($this->GetIDForIdent($Ident), $Value);
                 break;
             default:
+                $api = new Weishaupt(new WeishauptOptions($this->ReadPropertyString("URL"), $this->ReadPropertyString("Username"), $this->ReadPropertyString("Password")));
+                
                 if(strpos($Ident, self::BETRIEBSART_HK_PREFIX) !== false) {
-                    $this->UpdateWCMBetriebsartHK(intval(substr($Ident, strlen(self::BETRIEBSART_HK_PREFIX))), $Value);
+                    $api->bufferedUpdateBetriebsartHK(intval(substr($Ident, strlen(self::BETRIEBSART_HK_PREFIX))), $Value);
+                    SetValue($this->GetIDForIdent($Ident), $Value);
+                } elseif(strpos($Ident, "NormalRaumtemperaturHK") !== false) {
+                    $api->bufferedUpdateNormalRaumtemperaturHK(intval(substr($Ident, strlen("NormalRaumtemperaturHK"))), $Value);
+                    SetValue($this->GetIDForIdent($Ident), $Value);
+                }  elseif(strpos($Ident, "RaumfrosttemperaturHK") !== false) {
+                    $api->bufferedUpdateRaumfrosttemperaturHK(intval(substr($Ident, strlen("RaumfrosttemperaturHK"))), $Value);
+                    SetValue($this->GetIDForIdent($Ident), $Value);
+                }  elseif(strpos($Ident, "SoWiUmschalttemperaturHK") !== false) {
+                    $api->bufferedUpdateNormalRaumtemperaturHK(intval(substr($Ident, strlen("SoWiUmschalttemperaturHK"))), $Value);
+                    SetValue($this->GetIDForIdent($Ident), $Value);
+                }  elseif(strpos($Ident, "SteilheitHK") !== false) {
+                    $api->bufferedUpdateNormalRaumtemperaturHK(intval(substr($Ident, strlen("SteilheitHK"))), $Value);
                     SetValue($this->GetIDForIdent($Ident), $Value);
                 } else {
                     throw new Exception("Invalid Ident");
                 }
+                
+                $api->sendBuffer(10);
+                $api->clearBuffer();
         }
         
-    }
-    public function UpdateWCMBetriebsartHK(int $heizkreis, int $betriebsart) {
-        $api = new Weishaupt(new WeishauptOptions($this->ReadPropertyString("URL"), $this->ReadPropertyString("Username"), $this->ReadPropertyString("Password")));
-
-        $api->bufferedUpdateBetriebsartHK($heizkreis, $betriebsart);
-        $api->sendBuffer(10);
-        $api->clearBuffer();
     }
 
     public function UpdateWCMMaxLeistungHeizung(int $maxLeistung) {

@@ -297,6 +297,58 @@ class Weishaupt {
         return $this->addBuffer($telegram);
     }
     
+    /**
+    * Adds a new telegram to the buffer and returns the buffer position
+    */
+    public function bufferedUpdateNormalRaumtemperaturHK(int $heizkreis, int $normalRaumtemperatur): int {
+        if($maxLeistung > 100 || $maxLeistung < 36) {
+            throw new Exception("Value outside of valid range of 36% - 100%");
+        }
+        
+        $telegram = [6, ($heizkreis - 1), Operation["Schreiben"], Info["NormalRaumtemperaturHK"], 0, 0, $this->_calcLowByte($normalRaumtemperatur * 10), $this->_calcHighByte($normalRaumtemperatur * 10)];
+
+        return $this->addBuffer($telegram);
+    }
+    
+    /**
+    * Adds a new telegram to the buffer and returns the buffer position
+    */
+    public function bufferedUpdateSteilheitHK(int $heizkreis, int $steilheit): int {
+        if($maxLeistung > 100 || $maxLeistung < 36) {
+            throw new Exception("Value outside of valid range of 36% - 100%");
+        }
+        
+        $telegram = [6, ($heizkreis - 1), Operation["Schreiben"], Info["SteilheitHK"], 0, 0, $this->_calcLowByte($steilheit * 10), $this->_calcHighByte($steilheit * 10)];
+
+        return $this->addBuffer($telegram);
+    }
+    
+    /**
+    * Adds a new telegram to the buffer and returns the buffer position
+    */
+    public function bufferedUpdateRaumfrosttemperaturHK(int $heizkreis, int $raumfrosttemperatur): int {
+        if($maxLeistung > 100 || $maxLeistung < 36) {
+            throw new Exception("Value outside of valid range of 36% - 100%");
+        }
+        
+        $telegram = [6, ($heizkreis - 1), Operation["Schreiben"], Info["RaumfrosttemperaturHK"], 0, 0, $this->_calcLowByte($raumfrosttemperatur * 10), $this->_calcHighByte($raumfrosttemperatur * 10)];
+
+        return $this->addBuffer($telegram);
+    }
+    
+    /**
+    * Adds a new telegram to the buffer and returns the buffer position
+    */
+    public function bufferedUpdateSoWiUmschalttemperaturHK(int $heizkreis, int $temperatur): int {
+        if($maxLeistung > 100 || $maxLeistung < 36) {
+            throw new Exception("Value outside of valid range of 36% - 100%");
+        }
+        
+        $telegram = [6, ($heizkreis - 1), Operation["Schreiben"], Info["SoWiUmschalttemperaturHK"], 0, 0, $this->_calcLowByte($temperatur * 10), $this->_calcHighByte($temperatur * 10)];
+
+        return $this->addBuffer($telegram);
+    }
+    
     private function addBuffer(array $telegram): int {
         $len = array_push($this->telegramRequestBuffer, $telegram);
         
