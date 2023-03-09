@@ -104,10 +104,10 @@ class WCMConnector extends IPSModule {
                         $api->bufferedUpdateRaumfrosttemperaturHK(intval(substr($Ident, strlen("RaumfrosttemperaturHK"))), $Value);
                         SetValue($this->GetIDForIdent($Ident), $Value);
                     }  elseif(strpos($Ident, "SoWiUmschalttemperaturHK") !== false) {
-                        $api->bufferedUpdateNormalRaumtemperaturHK(intval(substr($Ident, strlen("SoWiUmschalttemperaturHK"))), $Value);
+                        $api->bufferedUpdateSoWiUmschalttemperaturHK(intval(substr($Ident, strlen("SoWiUmschalttemperaturHK"))), $Value);
                         SetValue($this->GetIDForIdent($Ident), $Value);
                     }  elseif(strpos($Ident, "SteilheitHK") !== false) {
-                        $api->bufferedUpdateNormalRaumtemperaturHK(intval(substr($Ident, strlen("SteilheitHK"))), $Value);
+                        $api->bufferedUpdateSteilheitHK(intval(substr($Ident, strlen("SteilheitHK"))), $Value);
                         SetValue($this->GetIDForIdent($Ident), $Value);
                     } else {
                         throw new Exception("Invalid Ident");
@@ -115,6 +115,8 @@ class WCMConnector extends IPSModule {
                     
                     $api->sendBuffer(10);
                     $api->clearBuffer();
+                    
+                    IPS_SemaphoreLeave("WCM_Communication");
             }
         } else {
             echo "Durch parallele Anfrage blockiert.";
