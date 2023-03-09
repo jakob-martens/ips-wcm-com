@@ -31,7 +31,7 @@ class FinalTelegramObject {
     public int $PROT;
     public int $INFONR;
     public int $INDEX;
-    public int $DATA;
+    public float $DATA;
     public int $HIGH_BYTE;
     public string $UNIT;
 }
@@ -481,7 +481,7 @@ class Weishaupt {
      *
      * @param telegramObject a single telegramObject
      */
-    private function _convertData(TelegramObject $telegramObject): int {
+    private function _convertData(TelegramObject $telegramObject): float {
         switch ($telegramObject->INFONR) {
             case Info["VorlauftemperaturEstb"]:
             case Info["GedaempfteAussentemperatur"]:
@@ -504,11 +504,11 @@ class Weishaupt {
             case Info["RaumfrosttemperaturHK"]:
             case Info["SteilheitHK"]:
                 $val = $this->_extractValue($telegramObject->DATA, $telegramObject->HIGH_BYTE);
-                return (int) ($val / 10);
+                return ($val / 10);
             case Info["LeistungSolar"]:
             case Info["Durchfluss"]:
                 $val = $this->_extractValue($telegramObject->DATA, $telegramObject->HIGH_BYTE);
-                return (int) ($val / 100);
+                return ($val / 100);
             case Info["Fehlercode"]:
             case Info["Password"]:
             case Info["StartsiteFooter"]:
