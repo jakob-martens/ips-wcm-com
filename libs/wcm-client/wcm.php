@@ -450,6 +450,7 @@ class Weishaupt {
             case Info["VorlauftemperaturHK"]:
             case Info["SoWiUmschalttemperaturHK"]:
             case Info["RaumfrosttemperaturHK"]:
+            case Info["SteilheitHK"]:
                 $val = $this->_extractValue($telegramObject->DATA, $telegramObject->HIGH_BYTE);
                 return (int) ($val / 10);
             case Info["LeistungSolar"]:

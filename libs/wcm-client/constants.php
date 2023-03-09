@@ -45,9 +45,9 @@ const Info = array(
     "Durchfluss" => 130,
     /** As it is, it is percent */
     "Laststellung" => 138,
-    "SteilheitHK" => 270,
     "BetriebsartHK" => 274,
     /** Divide by 10 */
+    "SteilheitHK" => 270,
     "SoWiUmschalttemperaturHK" => 278,
     "MaxLeistungHeizung" => 319,
     /** Divide by 10 */
