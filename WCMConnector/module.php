@@ -65,6 +65,8 @@ class WCMConnector extends IPSModule {
         $this->RegisterVariableFloat("KesselRuecklauftemperatur", "Kessel Rücklauftemperatur", "~Temperature", $startPosition + 10);
         $this->RegisterVariableFloat("KesselWarmwassertemperatur", "Kessel Warmwassertemperatur", "~Temperature", $startPosition + 11);
         $this->RegisterVariableFloat("KesselAbgastemperatur", "Kessel Abgastemperatur", "~Temperature", $startPosition + 12);
+        $this->RegisterVariableFloat("PufferB10Oben", "Puffer B10 Temperatur Oben", "~Temperature", $startPosition + 13);
+        $this->RegisterVariableFloat("PufferB11Unten", "Puffer B11 Temperatur Unten", "~Temperature", $startPosition + 14);
         
         $this->RequestAction("ParameterUpdate", $this->GetValue("ParameterUpdate"));
     }
@@ -170,6 +172,8 @@ class WCMConnector extends IPSModule {
         $bufferPositions["KesselRuecklauftemperatur"] = $api->bufferedRequestRuecklauftemperatur();
         $bufferPositions["KesselWarmwassertemperatur"] = $api->bufferedRequestWarmwassertemperatur();
         $bufferPositions["KesselAbgastemperatur"] = $api->bufferedRequestAbgastemperatur();
+        $bufferPositions["PufferB10Oben"] = $api->bufferedRequestB10PufferOben();
+        $bufferPositions["PufferB11Unten"] = $api->bufferedRequestB11PufferUnten();
 
         $error = false;
         if($sendBuffer == true) {

@@ -193,6 +193,24 @@ class Weishaupt {
     /**
      * Adds a new telegram to the buffer and returns the buffer position
      */
+    public function bufferedRequestB10PufferOben(): int {
+        $telegram = [3, 0, Operation["Lesen"], Info["B10PufferOben"], 0, 0, 0, 0];
+
+        return $this->addBuffer($telegram);
+    }
+    
+    /**
+     * Adds a new telegram to the buffer and returns the buffer position
+     */
+    public function bufferedRequestB11PufferUnten(): int {
+        $telegram = [3, 0, Operation["Lesen"], Info["B11PufferUnten"], 0, 0, 0, 0];
+
+        return $this->addBuffer($telegram);
+    }
+    
+    /**
+     * Adds a new telegram to the buffer and returns the buffer position
+     */
     public function bufferedRequestBetriebsartHK(int $heizkreis): int {
         $telegram = [6, ($heizkreis - 1), Operation["Lesen"], Info["BetriebsartHK"], 0, 0, 0, 0];
 
