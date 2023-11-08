@@ -186,7 +186,7 @@ class WCMConnector extends IPSModule {
         }
         
         foreach($bufferPositions as $key => $value) {
-            if($error == true || $sendBuffer == false) {
+            if($error == true || $sendBuffer == false || !isset($response->getIterator()[$value])) {
                 $this->SetValue($key, 0);
             } else {
                 $this->SetValue($key, $response->getIterator()[$value]->DATA);
